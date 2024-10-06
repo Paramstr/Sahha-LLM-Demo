@@ -32,13 +32,13 @@ export default function Home() {
             <DataColumn 
               icon={<ScrollText className="h-6 w-6" />}
               title="Raw Data"
-              systemPrompt="You are an AI assistant specialised in analysing raw health data and providing clear, informative explanations. Your primary function is to interpret various types of health data, identify patterns or anomalies, and explain their potential significance in easy-to-understand terms..."
+              initialSystemPrompt="You are an AI assistant specialised in analysing raw health data and providing clear, informative explanations. Your primary function is to interpret various types of health data, identify patterns or anomalies, and explain their potential significance in easy-to-understand terms..."
             />
             <DataColumn 
               icon={<SahhaLogo />}
               title="Sahha Data"
             
-              systemPrompt="You are an AI assistant specialised in analysing Sahha health data and providing clear, informative explanations. Your primary function is to interpret various types of health data, identify patterns or anomalies, and explain their potential significance in easy-to-understand terms..."
+              initialSystemPrompt="You are an AI assistant specialised in analysing Sahha health data and providing clear, informative explanations. Your primary function is to interpret various types of health data, identify patterns or anomalies, and explain their potential significance in easy-to-understand terms..."
             />
           </div>
         </div>
