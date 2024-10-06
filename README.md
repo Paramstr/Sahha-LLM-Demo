@@ -71,19 +71,3 @@ npm install -g pnpm
     ```
 
     This will start the Next.js development server. By default, it should be available at `http://localhost:3000` 🌐.
-
-5. **Build for production**:
-
-    To build the project for production:
-
-    ```bash
-    pnpm build
-    ```
-
-6. **Run the production server**:
-
-    After building, you can run the project in production mode:
-
-    ```bash
-    pnpm start
-    ```
