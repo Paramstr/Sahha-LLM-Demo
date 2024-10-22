@@ -11,6 +11,8 @@ from pydantic import BaseModel, Field, ConfigDict
 import logging
 from pathlib import Path
 import numpy as np
+import sys
+from datetime import datetime
 
 # Load environment variables from the .env.local file
 load_dotenv(dotenv_path='.env.local')
@@ -392,6 +394,9 @@ class HealthKitAnalyzer:
 def main():
     """Main entry point"""
     try:
+
+
+
         analyzer = HealthKitAnalyzer()
         results = analyzer.generate_and_analyze(
             start_date=datetime.now(),
@@ -399,12 +404,7 @@ def main():
             activity_level="moderately_active",
             exercise_type="cardio"
         )
-        
-        # Print summary
-       #print("\nAnalysis Summary")
-        #print(json.dumps(results, indent=2))
 
-    
 
         
     except Exception as e:
