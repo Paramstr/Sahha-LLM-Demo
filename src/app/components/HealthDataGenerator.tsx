@@ -1,46 +1,119 @@
-// components/HealthDataGenerator.tsx
 import React, { useState } from 'react';
-import { Calendar, Database, ChevronDown, ChevronUp } from "lucide-react";
+import { Calendar, Database, ChevronDown, ChevronUp, Loader2 } from "lucide-react";
 import { Switch } from "../components/ui/switch";
 import { Header } from './DataComparisonComponents';
 import ReactJson from 'react-json-view';
 
+// Add this type definition at the top of your file or in a separate types file
+type ActivityLevel = 'very_active' | 'active' | 'moderately_active' | 'sedentary_but_walking' | 'sedentary';
+
 const ConfigSection = () => {
+  const today = new Date().toISOString().split('T')[0];
+  
   const [timePeriod, setTimePeriod] = useState('day');
-  const [startDate, setStartDate] = useState('');
-  const [activityLevel, setActivityLevel] = useState('active');
+  const [startDate, setStartDate] = useState(today);
+  const [activityLevel, setActivityLevel] = useState<ActivityLevel>('active');
   const [mainExerciseType, setMainExerciseType] = useState('cardio');
   const [generatedData, setGeneratedData] = useState<any>(null);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
 
-  const generateData = () => {
-    const mockData = {
-      summary: `Generated synthetic HealthKit data for an ${activityLevel} individual for a ${timePeriod} starting ${startDate || 'today'}, focusing on ${mainExerciseType} exercise.`,
+  const processHealthData = async (config: {
+    activityLevel: ActivityLevel;
+    timePeriod: string;
+    startDate: string;
+    mainExerciseType: string;
+  }) => {
+    // Simulate processing time
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
+    // Example processing logic based on activity level
+    const baseSteps = {
+      'very_active': 12000,
+      'active': 8000,
+      'moderately_active': 6000,
+      'sedentary_but_walking': 4000,
+      'sedentary': 2000
+    }[config.activityLevel];
+
+    const baseCalories: Record<ActivityLevel, number> = {
+      'very_active': 800,
+      'active': 600,
+      'moderately_active': 400,
+      'sedentary_but_walking': 200,
+      'sedentary': 100
+    };
+
+    const baseCaloriesValue = baseCalories[config.activityLevel];
+
+    // Generate hourly data with some variation
+    const hours = Array.from({ length: 24 }, (_, i) => i);
+    const stepData: Record<number, number> = {};
+    const calorieData: Record<number, number> = {};
+    const distanceData: Record<number, number> = {};
+    const flightsData: Record<number, number> = {};
+
+    hours.forEach(hour => {
+      // Add random variation to base values
+      const variation = 0.2; // 20% variation
+      const timeOfDayFactor = Math.sin((hour - 6) * Math.PI / 12) * 0.5 + 0.5; // Peak at midday
+      
+      const hourlySteps = Math.round(
+        (baseSteps / 24) * timeOfDayFactor * (1 + (Math.random() - 0.5) * variation)
+      );
+      
+      const hourlyCalories = Math.round(
+        (baseCaloriesValue / 24) * timeOfDayFactor * (1 + (Math.random() - 0.5) * variation)
+      );
+
+      if (hourlySteps > 0) stepData[hour] = hourlySteps;
+      if (hourlyCalories > 0) calorieData[hour] = hourlyCalories;
+      
+      // Generate distance data (roughly 0.7m per step)
+      if (hourlySteps > 0) {
+        distanceData[hour] = parseFloat((hourlySteps * 0.0007).toFixed(2));
+      }
+
+      // Random flights of stairs (more likely during active hours)
+      if (timeOfDayFactor > 0.5 && Math.random() > 0.7) {
+        flightsData[hour] = Math.round(Math.random() * 3 + 1);
+      }
+    });
+
+    return {
+      summary: `Generated synthetic HealthKit data for an ${config.activityLevel} individual for a ${config.timePeriod} starting ${config.startDate}, focusing on ${config.mainExerciseType} exercise.`,
       synthetic_data: {
-        "2024-07-20": {
-          "HKQuantityTypeIdentifierFlightsClimbed": {
-            "8": 1.0, "18": 2.0
-          },
-          "HKQuantityTypeIdentifierDistanceWalkingRunning": {
-            "17": 7.2
-          },
-          "HKQuantityTypeIdentifierActiveEnergyBurned": {
-            "12": 150,
-            "15": 200,
-            "18": 175
-          },
-          "HKQuantityTypeIdentifierStepCount": {
-            "8": 1200,
-            "12": 2500,
-            "15": 3000,
-            "18": 2800
-          }
+        [config.startDate]: {
+          "HKQuantityTypeIdentifierStepCount": stepData,
+          "HKQuantityTypeIdentifierActiveEnergyBurned": calorieData,
+          "HKQuantityTypeIdentifierDistanceWalkingRunning": distanceData,
+          "HKQuantityTypeIdentifierFlightsClimbed": flightsData
         }
       }
     };
-    setGeneratedData(mockData);
-    setIsExpanded(true);
   };
+
+  const generateData = async () => {
+    setIsGenerating(true);
+    try {
+      const config = {
+        timePeriod,
+        startDate,
+        activityLevel,
+        mainExerciseType
+      };
+      
+      const processedData = await processHealthData(config);
+      setGeneratedData(processedData);
+      setIsExpanded(true);
+    } catch (error) {
+      console.error('Error generating data:', error);
+      // You might want to show an error message to the user here
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
 
   return (
     <div className="space-y-4">
@@ -48,15 +121,20 @@ const ConfigSection = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-2">
           <label className="block text-sm font-medium">Time Period</label>
-          <select
-            value={timePeriod}
-            onChange={(e) => setTimePeriod(e.target.value)}
-            className="w-full p-2 bg-gray-100 rounded-lg border-0 text-sm"
-          >
-            <option value="day">Day</option>
-            <option value="week">Week</option>
-            <option value="month">Month</option>
-          </select>
+          <div className="relative">
+            <select
+              value={timePeriod}
+              onChange={(e) => setTimePeriod(e.target.value)}
+              className="w-full p-2 pr-12 bg-gray-100 rounded-lg border-0 text-sm appearance-none"
+            >
+              <option value="day">Day</option>
+              <option value="week">Week</option>
+              <option value="month">Month</option>
+            </select>
+            <div className="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none">
+              <ChevronDown className="h-4 w-4 text-gray-500" />
+            </div>
+          </div>
         </div>
 
         <div className="space-y-2">
@@ -66,48 +144,65 @@ const ConfigSection = () => {
               type="date"
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
-              className="w-full p-2 bg-gray-100 rounded-lg border-0 text-sm"
+              className="w-full p-2 pr-4 bg-gray-100 rounded-lg border-0 text-sm"
             />
-            <Calendar className="absolute right-2 top-2 h-4 w-4 text-gray-400" />
           </div>
         </div>
 
         <div className="space-y-2">
           <label className="block text-sm font-medium">Activity Level</label>
-          <select
-            value={activityLevel}
-            onChange={(e) => setActivityLevel(e.target.value)}
-            className="w-full p-2 bg-gray-100 rounded-lg border-0 text-sm"
-          >
-            <option value="very_active">Very Active</option>
-            <option value="active">Active</option>
-            <option value="moderately_active">Moderately Active</option>
-            <option value="sedentary_but_walking">Sedentary but Walking</option>
-            <option value="sedentary">Sedentary</option>
-          </select>
+          <div className="relative">
+            <select
+              value={activityLevel}
+              onChange={(e) => setActivityLevel(e.target.value as ActivityLevel)}
+              className="w-full p-2 pr-12 bg-gray-100 rounded-lg border-0 text-sm appearance-none"
+            >
+              <option value="very_active">Very Active <span className="text-gray-500">(5-7 days/week)</span></option>
+              <option value="active">Active <span className="text-gray-500">(3-5 days/week)</span></option>
+              <option value="moderately_active">Moderately Active <span className="text-gray-500">(2-3 days/week)</span></option>
+              <option value="sedentary_but_walking">Sedentary but Walking <span className="text-gray-500">(Light walking, 1-2 days/week)</span></option>
+              <option value="sedentary">Sedentary <span className="text-gray-500">(Minimal activity)</span></option>
+            </select>
+            <div className="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none">
+              <ChevronDown className="h-4 w-4 text-gray-500" />
+            </div>
+          </div>
         </div>
 
         <div className="space-y-2">
           <label className="block text-sm font-medium">Main Exercise Type</label>
-          <select
-            value={mainExerciseType}
-            onChange={(e) => setMainExerciseType(e.target.value)}
-            className="w-full p-2 bg-gray-100 rounded-lg border-0 text-sm"
-          >
-            <option value="strength_training">Strength Training</option>
-            <option value="cardio">Cardio</option>
-            <option value="pilates/yoga">Pilates/Yoga</option>
-            <option value="hiit">HIIT</option>
-            <option value="none">None</option>
-          </select>
+          <div className="relative">
+            <select
+              value={mainExerciseType}
+              onChange={(e) => setMainExerciseType(e.target.value)}
+              className="w-full p-2 pr-12 bg-gray-100 rounded-lg border-0 text-sm appearance-none"
+            >
+              <option value="strength_training">Strength Training</option>
+              <option value="cardio">Cardio</option>
+              <option value="pilates/yoga">Pilates/Yoga</option>
+              <option value="hiit">HIIT</option>
+              <option value="none">None</option>
+            </select>
+            <div className="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none">
+              <ChevronDown className="h-4 w-4 text-gray-500" />
+            </div>
+          </div>
         </div>
       </div>
 
       <button
         onClick={generateData}
-        className="w-full bg-black text-white p-3 rounded-xl hover:bg-gray-800 transition-colors mt-4"
+        disabled={isGenerating}
+        className="w-full bg-black text-white p-3 rounded-xl hover:bg-gray-800 transition-colors mt-4 flex items-center justify-center"
       >
-        Generate Data
+        {isGenerating ? (
+          <>
+            <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+            Processing...
+          </>
+        ) : (
+          'Generate Data'
+        )}
       </button>
 
       {generatedData && (
@@ -123,7 +218,7 @@ const ConfigSection = () => {
             )}
             <span>Raw Data View</span>
           </button>
-          
+
           {isExpanded && (
             <div className="grid md:grid-cols-2 gap-6 bg-gray-100 p-4 rounded-xl">
               <div className="space-y-2">
