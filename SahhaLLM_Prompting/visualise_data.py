@@ -23,7 +23,7 @@ logger = logging.getLogger(__name__)
 
 class HealthMetricsVisualizerGUI:
     def __init__(self, input_path: str = None):
-        self.input_path = Path(input_path) if input_path else Path('./SahhaLLM_Prompting/output/healthkit_analysis.json')
+        self.input_path = Path(input_path) if input_path else Path('SahhaLLM_Prompting/output/moderately_active_week_cardio.json')
         
         # Initialize main window
         self.root = tk.Tk()
@@ -149,17 +149,18 @@ class HealthMetricsVisualizerGUI:
         ax2 = plt.subplot(2, 2, 2)
         # Calculate correlations between metrics
         correlation_data = daily_totals_pivot.corr()
-        # Create heatmap
+        # Create heatmap with pastel blue-green colormap
         sns.heatmap(
             correlation_data,
             annot=True,  # Show correlation values
-            cmap='coolwarm',  # Red-blue colormap
-            vmin=-1,  # Minimum correlation value
-            vmax=1,   # Maximum correlation value
-            center=0, # Center the colormap at 0
+            cmap='Blues',  # Pastel purple to green colormap
+            vmin=0,      # Minimum correlation value (since we know we have no negative values)
+            vmax=1,      # Maximum correlation value
             ax=ax2
         )
         ax2.set_title('Metric Correlations')
+       
+      
         
         # Rest of your plots can go in positions 3 and 4
         # You can add them here if needed
