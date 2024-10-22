@@ -83,22 +83,25 @@ class HealthMetricsVisualizerGUI:
         # Create notebook for tabs
         self.notebook = ttk.Notebook(self.root)
         self.notebook.pack(fill='both', expand=True, padx=10, pady=10)
-        
+
         # Create tabs
         self.analysis_tab = ttk.Frame(self.notebook)
         self.overview_tab = ttk.Frame(self.notebook)
+        self.correlation_tab = ttk.Frame(self.notebook)  # New correlation tab
         self.detailed_tab = ttk.Frame(self.notebook)
         self.weekly_tab = ttk.Frame(self.notebook)
-        
+
         # Add tabs to notebook
         self.notebook.add(self.analysis_tab, text='Analysis')
         self.notebook.add(self.overview_tab, text='Overview')
+        self.notebook.add(self.correlation_tab, text='Correlations')  # Add new tab
         self.notebook.add(self.detailed_tab, text='Detailed Metrics')
         self.notebook.add(self.weekly_tab, text='Weekly Patterns')
-        
+
         # Create content for each tab
         self.create_analysis_tab()
         self.create_overview_tab()
+        self.create_correlation_tab()  # New method
         self.create_detailed_tab()
         self.create_weekly_tab()
 
@@ -132,45 +135,130 @@ class HealthMetricsVisualizerGUI:
         text_widget.config(state='disabled')  # Make read-only
 
 
-    
     def create_overview_tab(self):
-        fig = plt.figure(figsize=(15, 10))
+        # Create figure with improved spacing
+        fig = plt.figure(figsize=(20, 20))
         
-        # Daily totals over time (top left)
-        ax1 = plt.subplot(2, 2, 1)
+        # Create GridSpec with better spacing - 3x3 grid
+        gs = plt.GridSpec(
+            4, 3,
+            figure=fig,
+            height_ratios=[1, 1, 1, 0.2],  # Last row for legend
+            hspace=0.6,  # Increased vertical space between plots
+            wspace=0.3   # Horizontal space between plots
+        )
+        
+        # Create daily plots (one for each day of the week)
+        weekday_order = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+        
+        # Store lines and labels for legend
+        legend_lines = []
+        legend_labels = []
+        
+        # Create daily plots in a 3x3 grid
+        for idx, day in enumerate(weekday_order):
+            row = idx // 3
+            col = idx % 3
+            
+            # For Sunday (last plot), center it in the last row
+            if day == 'Sunday':
+                ax = fig.add_subplot(gs[2, 1])  # Center position of last row
+            else:
+                ax = fig.add_subplot(gs[row, col])
+            
+            # Filter data for the specific day
+            day_data = self.df[self.df['weekday'] == day]
+            hourly_data = day_data.groupby(['hour', 'metric'])['value'].mean().reset_index()
+            pivot_data = hourly_data.pivot(index='hour', columns='metric', values='value')
+            normalized_data = pivot_data.apply(lambda x: (x - x.min()) / (x.max() - x.min()))
+            
+            # Plot normalized data with improved styling and collect line objects
+            for column in normalized_data.columns:
+                line, = ax.plot(normalized_data.index, normalized_data[column], 
+                            marker='o', markersize=2, linewidth=2, 
+                            label=column)
+                # Store only from the first plot for legend
+                if idx == 0:
+                    legend_lines.append(line)
+                    legend_labels.append(column)
+            
+            ax.set_title(f'{day} Activity', fontsize=14, pad=15)
+            ax.set_xlabel('Hour', fontsize=12, labelpad=10)
+            ax.set_ylabel('Normalized Value', fontsize=12, labelpad=10)
+            ax.grid(True, linestyle='--', alpha=0.7)
+            ax.tick_params(labelsize=10)
+            ax.legend().set_visible(False)
+            
+            # Set consistent axis limits and ticks
+            ax.set_ylim(-0.05, 1.05)
+            ax.set_xlim(-0.5, 23.5)
+            ax.set_xticks([0, 6, 12, 18, 23])
+        
+        # Add legend at the bottom spanning all columns
+        legend_ax = fig.add_subplot(gs[3, :])
+        legend_ax.axis('off')
+        
+        # Create legend using stored lines and labels
+        legend_ax.legend(
+            legend_lines,
+            legend_labels,
+            bbox_to_anchor=(0.5, 0.5),
+            loc='center',
+            fontsize=12,
+            title='Metrics',
+            title_fontsize=14,
+            frameon=True,
+            edgecolor='black',
+            borderpad=1,
+            labelspacing=1.2,
+            ncol=len(legend_labels)  # Place legend items in one row
+        )
+        
+        # Add main title with more space at the top
+        fig.suptitle('Daily Activity Patterns', fontsize=22, y=0.98)
+        
+        # Adjust layout
+        plt.tight_layout()
+        plt.subplots_adjust(top=0.90)  # Adjust for main title
+        
+        # Create canvas and add to tab
+        canvas = FigureCanvasTkAgg(fig, self.overview_tab)
+        canvas.draw()
+        canvas.get_tk_widget().pack(fill='both', expand=True, padx=20, pady=20)
+
+    def create_correlation_tab(self):
+        # Create figure for correlation matrix
+        fig, ax = plt.subplots(figsize=(12, 10))
+        
+        # Calculate daily totals and correlations
         daily_totals = self.df.groupby(['date', 'metric'])['value'].sum().reset_index()
         daily_totals_pivot = daily_totals.pivot(index='date', columns='metric', values='value')
-        normalized_totals = daily_totals_pivot.apply(lambda x: (x - x.min()) / (x.max() - x.min()))
-        normalized_totals.plot(marker='o', ax=ax1)
-        ax1.set_title('Normalized Daily Totals')
-        ax1.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
-        
-        # Correlation matrix (top right)
-        ax2 = plt.subplot(2, 2, 2)
-        # Calculate correlations between metrics
         correlation_data = daily_totals_pivot.corr()
-        # Create heatmap with pastel blue-green colormap
+        
+        # Create heatmap
         sns.heatmap(
             correlation_data,
-            annot=True,  # Show correlation values
-            cmap='Blues',  # Pastel purple to green colormap
-            vmin=0,      # Minimum correlation value (since we know we have no negative values)
-            vmax=1,      # Maximum correlation value
-            ax=ax2
+            annot=True,
+            cmap='Blues',
+            vmin=0,
+            vmax=1,
+            ax=ax,
+            annot_kws={'size': 12}
         )
-        ax2.set_title('Metric Correlations')
-       
-      
         
-        # Rest of your plots can go in positions 3 and 4
-        # You can add them here if needed
+        ax.set_title('Metric Correlations', pad=20, fontsize=16)
+        
+        # Rotate tick labels for better readability
+        plt.xticks(rotation=45, ha='right')
+        plt.yticks(rotation=0)
         
         plt.tight_layout()
         
-        canvas = FigureCanvasTkAgg(fig, self.overview_tab)
+        # Create canvas and add to tab
+        canvas = FigureCanvasTkAgg(fig, self.correlation_tab)
         canvas.draw()
         canvas.get_tk_widget().pack(fill='both', expand=True)
-
+    
     def create_detailed_tab(self):
         fig, axes = plt.subplots(len(self.metric_types), 1, figsize=(15, 4*len(self.metric_types)))
         fig.suptitle('Detailed Daily Patterns by Metric', size=16, y=0.95)
