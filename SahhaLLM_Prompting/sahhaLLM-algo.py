@@ -395,15 +395,21 @@ def main():
     """Main entry point"""
     try:
 
-
+        activity_levels = ["very_active", "active", "moderately_active", "sedentary"]
+        exercise_types = ["strength_training", "cardio", "pilates_yoga", "hiit"]
 
         analyzer = HealthKitAnalyzer()
-        results = analyzer.generate_and_analyze(
-            start_date=datetime.now(),
-            days=7,
-            activity_level="moderately_active",
-            exercise_type="cardio"
-        )
+        for activity_level in activity_levels:
+            if activity_level == "very_active":
+                continue
+            for exercise_type in exercise_types:
+                results = analyzer.generate_and_analyze(
+                    start_date=datetime.now(),
+                    days=7,
+                    activity_level=activity_level,
+                
+                    exercise_type=exercise_type
+                )
 
 
         

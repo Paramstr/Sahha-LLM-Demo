@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Database, ChevronDown, ChevronUp, Loader2 } from "lucide-react";
 import ReactJson from 'react-json-view';
 import { Header } from './DataComparisonComponents';
+import HealthVisualisation from './HealthVisualisation'; // Import the HealthVisualisation component
 
 // Match exact values expected by Python script
 type ActivityLevel = 'very_active' | 'active' | 'moderately_active' | 'sedentary';
@@ -16,37 +17,38 @@ const ConfigSection = () => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const generateData = async () => {
-    setIsGenerating(true);
-    setError(null);
 
-    try {
-      const response = await fetch('/api/generate_health', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          activity_level,
-          exercise_type,
-          days
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+    const generateData = async () => {
+      setIsGenerating(true);
+      setError(null);
+  
+      try {
+        // Construct the file path - remove leading slash for Next.js public folder
+        const filePath = `${process.env.NEXT_PUBLIC_BASE_PATH || ''}/sahha_generated/${activity_level}_week_${exercise_type}.json`;
+        
+        // Add cache control headers to prevent caching
+        const response = await fetch(filePath, {
+          headers: {
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+            'Pragma': 'no-cache',
+            'Expires': '0',
+          },
+        });
+  
+        if (!response.ok) {
+          throw new Error(`Failed to load data. Make sure the JSON file exists in the public/sahha_generated folder.`);
+        }
+  
+        const data = await response.json();
+        setGeneratedData(data);
+        setIsExpanded(true);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to generate data');
+        console.error('Error generating data:', err);
+      } finally {
+        setIsGenerating(false);
       }
-
-      const data = await response.json();
-      setGeneratedData(data);
-      setIsExpanded(true);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to generate data');
-      console.error('Error generating data:', err);
-    } finally {
-      setIsGenerating(false);
-    }
-  };
+    };
 
   return (
     <div className="space-y-4">
@@ -135,15 +137,18 @@ const ConfigSection = () => {
           </button>
 
           {isExpanded && (
-            <div className="bg-gray-100 p-4 rounded-xl">
-              <ReactJson
-                src={generatedData}
-                theme="rjv-default"
-                displayDataTypes={false}
-                name={false}
-                collapsed={1}
-              />
-            </div>
+            <>
+              <div className="bg-gray-100 p-4 rounded-xl">
+                <ReactJson
+                  src={generatedData}
+                  theme="rjv-default"
+                  displayDataTypes={false}
+                  name={false}
+                  collapsed={1}
+                />
+              </div>
+              <HealthVisualisation data={generatedData} /> {/* Add HealthVisualisation here */}
+            </>
           )}
         </div>
       )}
