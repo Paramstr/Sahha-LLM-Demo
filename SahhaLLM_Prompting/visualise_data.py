@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 
+import tkinter as tk
+from tkinter import ttk
 import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import seaborn as sns
 import pandas as pd
 import numpy as np
@@ -11,21 +14,22 @@ import logging
 from pathlib import Path
 import argparse
 import warnings
+import textwrap
 
-# Filter out specific matplotlib warnings
-warnings.filterwarnings("ignore", category=UserWarning, module="matplotlib")
-
-# Set up logging
+# Filter warnings
+warnings.filterwarnings("ignore", category=UserWarning)
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-class HealthMetricsVisualizer:
+class HealthMetricsVisualizerGUI:
     def __init__(self, input_path: str = None):
         self.input_path = Path(input_path) if input_path else Path('./SahhaLLM_Prompting/output/healthkit_analysis.json')
         
-        # Set style configurations
-        #plt.style.use('seaborn')
-        sns.set_theme(style="whitegrid")
+        # Initialize main window
+        self.root = tk.Tk()
+        self.root.title("Health Metrics Visualization")
+        self.root.state('zoomed')  # Maximize window
+        
         
         self.metric_types = [
             'HKQuantityTypeIdentifierStepCount',
@@ -42,6 +46,13 @@ class HealthMetricsVisualizer:
             'HKQuantityTypeIdentifierAppleExerciseTime': 'Exercise (min)',
             'HKQuantityTypeIdentifierFlightsClimbed': 'Flights'
         }
+        
+        # Load and prepare data
+        self.results = self.load_data()
+        self.df = self.prepare_dataframe(self.results)
+        
+        # Create tabs
+        self.create_tabs()
 
     def load_data(self) -> Dict:
         try:
@@ -53,13 +64,10 @@ class HealthMetricsVisualizer:
 
     def prepare_dataframe(self, results: Dict) -> pd.DataFrame:
         all_data = []
-        
         for day_data in results['data']:
             date = pd.to_datetime(day_data['date'])
-            
             for metric_type in self.metric_types:
                 hourly_data = day_data['metrics'][metric_type]
-                
                 for hour, value in hourly_data.items():
                     all_data.append({
                         'date': date,
@@ -67,123 +75,148 @@ class HealthMetricsVisualizer:
                         'value': float(value),
                         'metric': self.metric_names[metric_type]
                     })
-
         df = pd.DataFrame(all_data)
         df['weekday'] = df['date'].dt.day_name()
         return df
 
-    def plot_overview(self, df: pd.DataFrame) -> None:
-        fig = plt.figure(figsize=(22, 16))
-        fig.suptitle('Health Metrics Overview Analysis', size=16, y=0.95)
+    def create_tabs(self):
+        # Create notebook for tabs
+        self.notebook = ttk.Notebook(self.root)
+        self.notebook.pack(fill='both', expand=True, padx=10, pady=10)
         
-        # 1. Daily totals over time
+        # Create tabs
+        self.analysis_tab = ttk.Frame(self.notebook)
+        self.overview_tab = ttk.Frame(self.notebook)
+        self.detailed_tab = ttk.Frame(self.notebook)
+        self.weekly_tab = ttk.Frame(self.notebook)
+        
+        # Add tabs to notebook
+        self.notebook.add(self.analysis_tab, text='Analysis')
+        self.notebook.add(self.overview_tab, text='Overview')
+        self.notebook.add(self.detailed_tab, text='Detailed Metrics')
+        self.notebook.add(self.weekly_tab, text='Weekly Patterns')
+        
+        # Create content for each tab
+        self.create_analysis_tab()
+        self.create_overview_tab()
+        self.create_detailed_tab()
+        self.create_weekly_tab()
+
+    def create_analysis_tab(self):
+        # Create Text widget for analysis
+        text_widget = tk.Text(self.analysis_tab, wrap=tk.WORD, font=('Courier', 15))
+        text_widget.pack(fill='both', expand=True, padx=10, pady=10)
+        
+        # Add analysis content
+        analysis_text = (
+            "ACTIVITY PATTERNS:\n\n"
+            f"{self.results['analysis']['activity_patterns']}\n\n"
+            "CONSISTENCY:\n\n"
+            f"{self.results['analysis']['consistency']}\n\n"
+            "SUGGESTED IMPROVEMENTS:\n\n"
+            f"{self.results['analysis']['improvements']}\n\n"
+            "RECOMMENDATIONS:\n\n"
+            f"Timing: {self.results['recommendations']['timing']}\n\n"
+            f"Intensity: {self.results['recommendations']['intensity']}\n\n"
+            f"Recovery: {self.results['recommendations']['recovery']}\n\n"
+            f"Progression: {self.results['recommendations']['progression']}\n\n"
+            f"Habits: {self.results['recommendations']['habits']}\n\n"
+            "\nMETADATA:\n\n"
+            f"Activity Level: {self.results['metadata']['activity_level']}\n"
+            f"Exercise Type: {self.results['metadata']['exercise_type']}\n"
+            f"Date Range: {self.results['metadata']['date_range']['start'][:10]} to "
+            f"{self.results['metadata']['date_range']['end'][:10]}"
+        )
+        
+        text_widget.insert('1.0', analysis_text)
+        text_widget.config(state='disabled')  # Make read-only
+
+
+    
+    def create_overview_tab(self):
+        fig = plt.figure(figsize=(15, 10))
+        
+        # Daily totals over time (top left)
         ax1 = plt.subplot(2, 2, 1)
-        daily_totals = df.groupby(['date', 'metric'])['value'].sum().reset_index()
+        daily_totals = self.df.groupby(['date', 'metric'])['value'].sum().reset_index()
         daily_totals_pivot = daily_totals.pivot(index='date', columns='metric', values='value')
         normalized_totals = daily_totals_pivot.apply(lambda x: (x - x.min()) / (x.max() - x.min()))
         normalized_totals.plot(marker='o', ax=ax1)
-        ax1.set_title('Normalized Daily Totals Over Time')
+        ax1.set_title('Normalized Daily Totals')
         ax1.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
         
-        # 2. Hourly patterns
+        # Correlation matrix (top right)
         ax2 = plt.subplot(2, 2, 2)
-        hourly_avg = df.groupby(['hour', 'metric'])['value'].mean().reset_index()
-        for metric in self.metric_names.values():
-            metric_data = hourly_avg[hourly_avg['metric'] == metric]
-            ax2.plot(metric_data['hour'], 
-                    metric_data['value'] / metric_data['value'].max(),
-                    marker='o', 
-                    label=metric)
-        ax2.set_title('Normalized Average Hourly Patterns')
-        ax2.set_xlabel('Hour of Day')
-        ax2.set_ylabel('Normalized Value')
-        ax2.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
-        ax2.grid(True)
-
-        # 3. Activity heatmap
-        ax3 = plt.subplot(2, 2, 3)
-        pivot_data = df[df['metric'] == 'Steps'].pivot_table(
-            values='value', 
-            index=df['date'].dt.strftime('%Y-%m-%d'),
-            columns='hour', 
-            aggfunc='sum'
+        # Calculate correlations between metrics
+        correlation_data = daily_totals_pivot.corr()
+        # Create heatmap
+        sns.heatmap(
+            correlation_data,
+            annot=True,  # Show correlation values
+            cmap='coolwarm',  # Red-blue colormap
+            vmin=-1,  # Minimum correlation value
+            vmax=1,   # Maximum correlation value
+            center=0, # Center the colormap at 0
+            ax=ax2
         )
-        sns.heatmap(pivot_data, cmap='YlOrRd', ax=ax3)
-        ax3.set_title('Step Count Heatmap (Hour vs Day)')
-        ax3.set_xlabel('Hour of Day')
-        ax3.set_ylabel('Date')
+        ax2.set_title('Metric Correlations')
+        
+        # Rest of your plots can go in positions 3 and 4
+        # You can add them here if needed
+        
+        plt.tight_layout()
+        
+        canvas = FigureCanvasTkAgg(fig, self.overview_tab)
+        canvas.draw()
+        canvas.get_tk_widget().pack(fill='both', expand=True)
 
-        # 4. Correlation matrix
-        ax4 = plt.subplot(2, 2, 4)
-        daily_totals_pivot = daily_totals.pivot(index='date', columns='metric', values='value')
-        correlation_matrix = daily_totals_pivot.corr()
-        sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', center=0, ax=ax4)
-        ax4.set_title('Metric Correlations')
-
-        plt.subplots_adjust(top=0.92, bottom=0.08, left=0.08, right=0.85, hspace=0.25, wspace=0.35)
-        plt.show()
-
-    def plot_detailed_metrics(self, df: pd.DataFrame) -> None:
+    def create_detailed_tab(self):
         fig, axes = plt.subplots(len(self.metric_types), 1, figsize=(15, 4*len(self.metric_types)))
         fig.suptitle('Detailed Daily Patterns by Metric', size=16, y=0.95)
 
         for idx, metric in enumerate(self.metric_names.values()):
-            metric_data = df[df['metric'] == metric].copy()
+            metric_data = self.df[self.df['metric'] == metric].copy()
             metric_data['hour'] = metric_data['hour'].astype(str)
             sns.boxplot(data=metric_data, x='hour', y='value', ax=axes[idx])
             axes[idx].set_title(f'{metric} Distribution by Hour')
             axes[idx].set_xlabel('Hour of Day')
             axes[idx].set_ylabel(metric)
 
-        plt.subplots_adjust(hspace=0.4)
-        plt.show()
+        plt.tight_layout()
+        
+        canvas = FigureCanvasTkAgg(fig, self.detailed_tab)
+        canvas.draw()
+        canvas.get_tk_widget().pack(fill='both', expand=True)
 
-    def plot_weekly_patterns(self, df: pd.DataFrame) -> None:
-        fig, axes = plt.subplots(2, 1, figsize=(15, 12))
+    def create_weekly_tab(self):
+        fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(15, 12))
         fig.suptitle('Weekly Activity Patterns', size=16)
 
         weekday_order = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-        df['weekday'] = pd.Categorical(df['weekday'], categories=weekday_order, ordered=True)
+        self.df['weekday'] = pd.Categorical(self.df['weekday'], categories=weekday_order, ordered=True)
 
-        # Daily totals by weekday
-        daily_totals = df.groupby(['weekday', 'metric'])['value'].sum().reset_index()
-        sns.barplot(data=daily_totals, x='weekday', y='value', hue='metric', ax=axes[0])
-        axes[0].set_title('Total Activity by Weekday')
-        axes[0].tick_params(axis='x', rotation=45)
+        daily_totals = self.df.groupby(['weekday', 'metric'])['value'].sum().reset_index()
+        sns.barplot(data=daily_totals, x='weekday', y='value', hue='metric', ax=ax1)
+        ax1.set_title('Activity Totals by Weekday')
+        ax1.tick_params(axis='x', rotation=45)
         
-        # Hourly patterns by weekday
-        hourly_avg = df.groupby(['weekday', 'hour', 'metric'])['value'].mean().reset_index()
+        hourly_avg = self.df.groupby(['weekday', 'hour', 'metric'])['value'].mean().reset_index()
         pivot_data = hourly_avg[hourly_avg['metric'] == 'Steps'].pivot(
             index='weekday',
             columns='hour',
             values='value'
         )
-        sns.heatmap(pivot_data, ax=axes[1], cmap='YlOrRd')
-        axes[1].set_title('Average Hourly Steps by Weekday')
+        sns.heatmap(pivot_data, ax=ax2, cmap='YlOrRd')
+        ax2.set_title('Average Hourly Steps by Weekday')
         
         plt.tight_layout()
-        plt.show()
+        
+        canvas = FigureCanvasTkAgg(fig, self.weekly_tab)
+        canvas.draw()
+        canvas.get_tk_widget().pack(fill='both', expand=True)
 
-    def visualize(self) -> None:
-        try:
-            logger.info(f"Loading data from {self.input_path}")
-            results = self.load_data()
-            
-            logger.info("Preparing data for visualization")
-            df = self.prepare_dataframe(results)
-            
-            logger.info("Generating overview plots")
-            self.plot_overview(df)
-            
-            logger.info("Generating detailed metric plots")
-            self.plot_detailed_metrics(df)
-            
-            logger.info("Generating weekly pattern plots")
-            self.plot_weekly_patterns(df)
-            
-        except Exception as e:
-            logger.error(f"Error during visualization: {str(e)}")
-            raise
+    def run(self):
+        self.root.mainloop()
 
 def main():
     parser = argparse.ArgumentParser(description='Visualize HealthKit metrics from JSON file')
@@ -191,8 +224,8 @@ def main():
     
     args = parser.parse_args()
     
-    visualizer = HealthMetricsVisualizer(input_path=args.input)
-    visualizer.visualize()
+    app = HealthMetricsVisualizerGUI(input_path=args.input)
+    app.run()
 
 if __name__ == "__main__":
     main()
