@@ -96,7 +96,8 @@ const ConfigSection = () => {
             onChange={(e) => setDays(parseInt(e.target.value))}
             min="1"
             max="30"
-            className="w-full p-2 bg-gray-100 rounded-lg border-0 text-sm"
+            disabled
+            className="w-full p-2 bg-gray-100 rounded-lg border-0 text-sm opacity-40"
           />
         </div>
       </div>
@@ -161,7 +162,7 @@ export const HealthDataGenerator = () => {
     <div className="bg-[#333332] rounded-2xl p-4 md:p-8 mb-8">
       <div className="bg-white font-mono rounded-2xl shadow-md overflow-hidden">
         <div className="p-6">
-          <Header icon={<Database className="h-6 w-6" />} title="Dataset Generator" />
+          <Header icon={<Database className="h-6 w-6" />} title="Raw Dataset Generator" />
           <ConfigSection />
         </div>
       </div>
