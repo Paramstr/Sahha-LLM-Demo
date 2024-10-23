@@ -44,6 +44,91 @@ export async function POST(req: Request) {
     const profileId = body.profileId || generateUUID();
     const accountId = body.accountId || generateUUID();
 
+    console.log("Starting to process health data");
+    const dataByDate = healthData.reduce((acc: Record<string, any[]>, item: { date: string }) => {
+      const date = item.date.split('T')[0];
+      if (!acc[date]) {
+        acc[date] = [];
+      }
+      acc[date].push(item);
+      return acc;
+    }, {} as Record<string, any[]>);
+    console.log("Health data grouped by date:", Object.keys(dataByDate));
+
+    let allScores = [];
+
+    for (const [date, dayData] of Object.entries(dataByDate)) {
+      console.log(`Processing data for date: ${date}`);
+      const scoreTimes = ['06:00', '12:00', '18:00', '23:59'];
+      
+      for (const time of scoreTimes) {
+        console.log(`Generating score for ${date} at ${time}`);
+        const scorePrompt = `Generate a single Sahha activity score for ${date} at ${time}, based on this health data:
+        ${JSON.stringify(dayData)}
+        
+        Use this exact format:
+        {
+          "id": string (UUID),
+          "profileId": "${profileId}",
+          "accountId": "${accountId}",
+          "type": "activity",
+          "score": number (0.0 to 1.0),
+          "state": "minimal" | "low" | "medium" | "high",
+          "factors": [
+            {
+              "name": string,
+              "value": number,
+              "goal": number,
+              "unit": string,
+              "score": number (0.0 to 1.0),
+              "state": "minimal" | "low" | "medium" | "high"
+            }
+          ],
+          "dataSources": string[],
+          "scoreDateTime": "${date}T${time}:00+00:00",
+          "version": 1.0
+        }
+
+        Include these factors:
+        - steps (unit: count, goal: 10000)
+        - active_hours (unit: hour, goal: 12)
+        - active_calories (unit: kcal, goal: 500)
+        - intense_activity_duration (unit: minute, goal: 30)
+        - extended_inactivity (unit: hour, goal: 240)
+        - floors_climbed (unit: floor, goal: 10)
+
+        Adjust the factor values and scores to reflect typical activity patterns for this time of day.`;
+
+        console.log("Sending request to Anthropic API");
+        const scoreResponse = await anthropic.messages.create({
+          model: 'claude-3-sonnet-20240229',
+          max_tokens: 1000,
+          messages: [{ role: 'user', content: scorePrompt }],
+          system: "Always respond with valid JSON without any markdown formatting.",
+        });
+        console.log("Received response from Anthropic API");
+
+        let scoreText = extractTextFromContent(scoreResponse.content);
+        scoreText = scoreText.replace(/```json\n?|\n?```/g, '').trim();
+        
+        try {
+          console.log("Attempting to parse score JSON");
+          const score = JSON.parse(scoreText);
+          allScores.push(score);
+          console.log(`Successfully parsed and added score for ${date} at ${time}`);
+        } catch (error) {
+          console.error(`Failed to parse JSON for ${date} at ${time}. Attempting repair.`);
+          const repairedScoreJson = jsonrepair(scoreText);
+          const score = JSON.parse(repairedScoreJson);
+          allScores.push(score);
+          console.log(`Repaired and added score for ${date} at ${time}`);
+        }
+      }
+    }
+
+    console.log(`Total scores generated: ${allScores.length}`);
+    console.log("API LLM Scores: ", JSON.stringify({ scores: allScores }));
+
     //1.  Enhanced analysis prompt with more detailed requirements
     const analysisPrompt = `Analyze this health data and provide insights in JSON format. Include detailed sections for activity patterns, sleep quality, and mental wellbeing indicators.
 
@@ -218,7 +303,7 @@ export async function POST(req: Request) {
     // const biomarkers = JSON.parse(repairedBiomarkersJson);
 
     return NextResponse.json({
-      sahhaScores: scores,
+      sahhaScores: { scores: allScores },
       // biomarkers: biomarkers,
       analysis: analysis,
       metadata: {
@@ -248,3 +333,4 @@ export async function POST(req: Request) {
     }, { status: 500 });
   }
 }
+
