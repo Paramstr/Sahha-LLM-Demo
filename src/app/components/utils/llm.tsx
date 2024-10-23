@@ -1,10 +1,11 @@
 // /app/components/llm.tsx
-import { getterRawData } from './healthDataStore';
+import { getterRawData , getterSahhaData} from './healthDataStore';
 
 
 export async function runLLM(input: { systemPrompt: string, type: string }) {
 
     let dataToLoad;
+
     if (input.type === 'raw') {
         // Load raw JSON data
         let rawData = await getterRawData(); // Fetch raw data using the generateRawData function
@@ -17,13 +18,20 @@ export async function runLLM(input: { systemPrompt: string, type: string }) {
         }
         dataToLoad = rawData.data; // Extract the "data" section from the JSON
         console.log('Loaded raw data:', dataToLoad);
+
+
     } else if (input.type === 'sahha') {
-        // Load Sahha JSON data from public directory
-        const response = await fetch('/sahha_generated/sahha_mod_active_cardio.json');
-        if (!response.ok) {
-            throw new Error('Failed to load Sahha data');
+        // Load Sahha JSON data
+        let sahhaData = await getterSahhaData(); // Fetch Sahha data using the getter function
+        if (!sahhaData) {
+            console.log('No Sahha data found, loading from JSON: sahha_mod_active_cardio');
+            const response = await fetch('/sahha_generated/sahha_mod_active_cardio.json');
+            if (!response.ok) {
+                throw new Error('Failed to load Sahha data');
+            }
+            sahhaData = await response.json();
         }
-        dataToLoad = await response.json();
+        dataToLoad = sahhaData.scores; // Extract the "scores" section from the JSON
         console.log('Loaded Sahha data:', dataToLoad);
     } else {
         throw new Error('Invalid type specified. Expected "raw" or "sahha".');

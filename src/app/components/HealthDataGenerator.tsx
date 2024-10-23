@@ -8,7 +8,7 @@ import { Header } from './DataComparisonComponents';
 import HealthVisualisation from './HealthVisualisation';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../components/ui/tooltip";
 import { generateSahha } from './utils/generateSahha';
-import { setterRawData } from '../components/utils/healthDataStore';
+import { setterRawData, setterSahhaData} from '../components/utils/healthDataStore';
 
 // Add the dynamic import for ReactJson
 const ReactJson = dynamic(() => import('react-json-view'), {
@@ -80,6 +80,8 @@ const ConfigSection = () => {
       const result = await generateSahha(generatedRawData);
       if (result.success) {
         setGeneratedSahhaData(result.data);
+        //set sahha data to health store
+        setterSahhaData(result.data);
         setIsSahhaGenerated(true);
       } else {
         setError(result.error ?? 'An unknown error occurred');

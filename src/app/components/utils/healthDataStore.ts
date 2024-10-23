@@ -1,4 +1,5 @@
 let generatedRawData: any = null;
+let generatedSahhaData: any = null;
 
 export const setterRawData = (data: any) => {
   generatedRawData = data;
@@ -7,6 +8,15 @@ export const setterRawData = (data: any) => {
 export const getterRawData = () => {
   return generatedRawData;
 };
+
+export const setterSahhaData = (data: any) => {
+  generatedSahhaData = data;
+};
+
+export const getterSahhaData = () => {
+  return generatedSahhaData;
+};
+
 
 export const RawData_LLM_PROMPT = `Analyze the health data provided in the "data" array of the input JSON. Each object in the array contains a date and metrics for steps, distance, energy burned, exercise time, and flights climbed. Use this time-series data to generate a comprehensive analysis and recommendations.
 
