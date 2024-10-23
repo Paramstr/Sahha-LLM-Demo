@@ -1,9 +1,9 @@
+
 import React, { useState } from 'react';
 import { Database, ChevronDown, ChevronUp, Loader2 } from "lucide-react";
 import ReactJson from 'react-json-view';
 import { Header } from './DataComparisonComponents';
 import HealthVisualisation from './HealthVisualisation'; // Import the HealthVisualisation component
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../components/ui/tooltip";
 
 // Match exact values expected by Python script
 type ActivityLevel = 'very_active' | 'active' | 'moderately_active' | 'sedentary';
@@ -17,48 +17,39 @@ const ConfigSection = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [isRawDataGenerated, setIsRawDataGenerated] = useState(false);
 
-  const generateData = async () => {
-    setIsGenerating(true);
-    setError(null);
+
+    const generateData = async () => {
+      setIsGenerating(true);
+      setError(null);
   
-    try {
-      // Construct the file path - remove leading slash for Next.js public folder
-      const filePath = `${process.env.NEXT_PUBLIC_BASE_PATH || ''}/sahha_generated/${activity_level}_week_${exercise_type}.json`;
-      
-      // Add cache control headers to prevent caching
-      const response = await fetch(filePath, {
-        headers: {
-          'Cache-Control': 'no-cache, no-store, must-revalidate',
-          'Pragma': 'no-cache',
-          'Expires': '0',
-        },
-      });
+      try {
+        // Construct the file path - remove leading slash for Next.js public folder
+        const filePath = `${process.env.NEXT_PUBLIC_BASE_PATH || ''}/sahha_generated/${activity_level}_week_${exercise_type}.json`;
+        
+        // Add cache control headers to prevent caching
+        const response = await fetch(filePath, {
+          headers: {
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+            'Pragma': 'no-cache',
+            'Expires': '0',
+          },
+        });
   
-      if (!response.ok) {
-        throw new Error(`Failed to load data. Make sure the JSON file exists in the public/sahha_generated folder.`);
+        if (!response.ok) {
+          throw new Error(`Failed to load data. Make sure the JSON file exists in the public/sahha_generated folder.`);
+        }
+  
+        const data = await response.json();
+        setGeneratedData(data);
+        setIsExpanded(true);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to generate data');
+        console.error('Error generating data:', err);
+      } finally {
+        setIsGenerating(false);
       }
-  
-      const data = await response.json();
-      setGeneratedData(data);
-      setIsExpanded(true);
-      setIsRawDataGenerated(true);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to generate data');
-      console.error('Error generating data:', err);
-    } finally {
-      setIsGenerating(false);
-    }
-  };
-
-  const handleSahhaButtonClick = () => {
-    if (!isRawDataGenerated) {
-      console.log('Generate raw data first');
-    } else {
-      console.log('Create Sahha Data clicked');
-    }
-  };
+    };
 
   return (
     <div className="space-y-4">
@@ -106,51 +97,25 @@ const ConfigSection = () => {
             onChange={(e) => setDays(parseInt(e.target.value))}
             min="1"
             max="30"
-            disabled
-            className="w-full p-2 bg-gray-100 rounded-lg border-0 text-sm opacity-40"
+            className="w-full p-2 bg-gray-100 rounded-lg border-0 text-sm"
           />
         </div>
       </div>
 
-      <div className="flex space-x-4 mt-4">
-        <button
-          onClick={generateData}
-          disabled={isGenerating}
-          className="w-full bg-black text-white p-3 rounded-xl hover:bg-gray-800 transition-colors flex items-center justify-center"
-        >
-          {isGenerating ? (
-            <>
-              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-              Processing...
-            </>
-          ) : (
-            'Generate Data'
-          )}
-        </button>
-
-        <TooltipProvider delayDuration={0}>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <button
-                onClick={handleSahhaButtonClick}
-                disabled={!isRawDataGenerated}
-                className={`w-full p-3 rounded-xl transition-colors flex items-center justify-center ${
-                  isRawDataGenerated
-                    ? 'bg-[#898121] text-white hover:bg-[#7f7a1e]' // Updated color and hover color
-                    : 'bg-transparent border-2 border-[#898121] text-[#898121] cursor-not-allowed' // Updated color for disabled state
-                }`}
-              >
-                Create Sahha Data
-              </button>
-            </TooltipTrigger>
-            {!isRawDataGenerated && (
-              <TooltipContent className="border border-input bg-popover px-4 py-2 text-sm text-muted-foreground opacity-60 text-md">
-                ⚠️ Generate raw data first
-              </TooltipContent>
-            )}
-          </Tooltip>
-        </TooltipProvider>
-      </div>
+      <button
+        onClick={generateData}
+        disabled={isGenerating}
+        className="w-full bg-black text-white p-3 rounded-xl hover:bg-gray-800 transition-colors mt-4 flex items-center justify-center"
+      >
+        {isGenerating ? (
+          <>
+            <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+            Processing...
+          </>
+        ) : (
+          'Generate Data'
+        )}
+      </button>
 
       {error && (
         <div className="text-red-500 text-sm mt-2">
@@ -169,7 +134,7 @@ const ConfigSection = () => {
             ) : (
               <ChevronDown className="h-4 w-4" />
             )}
-            <span>View Generated Data</span>
+            <span>Generated Data</span>
           </button>
 
           {isExpanded && (
@@ -197,7 +162,7 @@ export const HealthDataGenerator = () => {
     <div className="bg-[#333332] rounded-2xl p-4 md:p-8 mb-8">
       <div className="bg-white font-mono rounded-2xl shadow-md overflow-hidden">
         <div className="p-6">
-          <Header icon={<Database className="h-6 w-6" />} title="Raw Dataset Generator" />
+          <Header icon={<Database className="h-6 w-6" />} title="Dataset Generator" />
           <ConfigSection />
         </div>
       </div>
