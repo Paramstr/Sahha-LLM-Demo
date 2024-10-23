@@ -31,6 +31,91 @@ function generateUUID(): string {
   });
 }
 
+async function generateBatchScores(dataByDate: Record<string, any[]>, profileId: string, accountId: string) {
+  const batchSize = 2; // Process 3 days at a time
+  const dates = Object.keys(dataByDate).sort();
+  const allScores = [];
+
+  for (let i = 0; i < dates.length; i += batchSize) {
+    const batchDates = dates.slice(i, i + batchSize);
+    const batchData = batchDates.reduce((acc, date) => {
+      acc[date] = dataByDate[date];
+      return acc;
+    }, {} as Record<string, any[]>);
+
+    const batchPrompt = `Generate Sahha activity scores for multiple days and times based on this health data:
+    ${JSON.stringify(batchData)}
+    
+    For each day, generate 4 scores at these times: 06:00, 12:00, 18:00, and 23:59. Group the scores by day.
+    Use this format for each score:
+    {
+      "id": string (UUID),
+      "profileId": "${profileId}",
+      "accountId": "${accountId}",
+      "type": "activity",
+      "score": number (0.0 to 1.0),
+      "state": "minimal" | "low" | "medium" | "high",
+      "factors": [
+        {
+          "name": string,
+          "value": number,
+          "goal": number,
+          "unit": string,
+          "score": number (0.0 to 1.0),
+          "state": "minimal" | "low" | "medium" | "high"
+        }
+      ],
+      "dataSources": string[],
+      "scoreDateTime": string (ISO datetime),
+      "version": 1.0
+    }
+
+    Include these factors:
+    - steps (unit: count, goal: 10000)
+    - active_hours (unit: hour, goal: 12)
+    - active_calories (unit: kcal, goal: 500)
+    - intense_activity_duration (unit: minute, goal: 30)
+    - extended_inactivity (unit: hour, goal: 240)
+    - floors_climbed (unit: floor, goal: 10)
+
+    Adjust factor values and scores to reflect typical activity patterns for each time of day.
+    Return an array of all generated scores.`;
+
+    console.log(`Sending batch request to Anthropic API for dates: ${batchDates.join(', ')}`);
+    const response = await anthropic.messages.create({
+      model: 'claude-3-sonnet-20240229',
+      max_tokens: 4000,
+      messages: [{ role: 'user', content: batchPrompt }],
+      system: "Always respond with valid JSON containing an array of scores.",
+    });
+    console.log(`Received batch response from Anthropic API for dates: ${batchDates.join(', ')}`);
+
+    let scoresText = extractTextFromContent(response.content);
+    scoresText = scoresText.replace(/```json\n?|\n?```/g, '').trim();
+
+    let batchScores;
+    try {
+      batchScores = JSON.parse(scoresText);
+    } catch (error) {
+      console.error("Failed to parse JSON. Attempting repair.");
+      const repairedScoresJson = jsonrepair(scoresText);
+      batchScores = JSON.parse(repairedScoresJson);
+    }
+
+    // Ensure batchScores is an array
+    if (!Array.isArray(batchScores)) {
+      throw new Error("Unexpected response format from Anthropic API");
+    }
+
+    // Filter out any non-object items
+    batchScores = batchScores.filter(score => typeof score === 'object' && score !== null);
+
+    allScores.push(...batchScores);
+  }
+
+  return allScores;
+}
+
 export async function POST(req: Request) {
   try {
     console.log("API: Received request");
@@ -55,79 +140,9 @@ export async function POST(req: Request) {
     }, {} as Record<string, any[]>);
     console.log("Health data grouped by date:", Object.keys(dataByDate));
 
-    let allScores = [];
-
-    for (const [date, dayData] of Object.entries(dataByDate)) {
-      console.log(`Processing data for date: ${date}`);
-      const scoreTimes = ['06:00', '12:00', '18:00', '23:59'];
-      
-      for (const time of scoreTimes) {
-        console.log(`Generating score for ${date} at ${time}`);
-        const scorePrompt = `Generate a single Sahha activity score for ${date} at ${time}, based on this health data:
-        ${JSON.stringify(dayData)}
-        
-        Use this exact format:
-        {
-          "id": string (UUID),
-          "profileId": "${profileId}",
-          "accountId": "${accountId}",
-          "type": "activity",
-          "score": number (0.0 to 1.0),
-          "state": "minimal" | "low" | "medium" | "high",
-          "factors": [
-            {
-              "name": string,
-              "value": number,
-              "goal": number,
-              "unit": string,
-              "score": number (0.0 to 1.0),
-              "state": "minimal" | "low" | "medium" | "high"
-            }
-          ],
-          "dataSources": string[],
-          "scoreDateTime": "${date}T${time}:00+00:00",
-          "version": 1.0
-        }
-
-        Include these factors:
-        - steps (unit: count, goal: 10000)
-        - active_hours (unit: hour, goal: 12)
-        - active_calories (unit: kcal, goal: 500)
-        - intense_activity_duration (unit: minute, goal: 30)
-        - extended_inactivity (unit: hour, goal: 240)
-        - floors_climbed (unit: floor, goal: 10)
-
-        Adjust the factor values and scores to reflect typical activity patterns for this time of day.`;
-
-        console.log("Sending request to Anthropic API");
-        const scoreResponse = await anthropic.messages.create({
-          model: 'claude-3-sonnet-20240229',
-          max_tokens: 1000,
-          messages: [{ role: 'user', content: scorePrompt }],
-          system: "Always respond with valid JSON without any markdown formatting.",
-        });
-        console.log("Received response from Anthropic API");
-
-        let scoreText = extractTextFromContent(scoreResponse.content);
-        scoreText = scoreText.replace(/```json\n?|\n?```/g, '').trim();
-        
-        try {
-          console.log("Attempting to parse score JSON");
-          const score = JSON.parse(scoreText);
-          allScores.push(score);
-          console.log(`Successfully parsed and added score for ${date} at ${time}`);
-        } catch (error) {
-          console.error(`Failed to parse JSON for ${date} at ${time}. Attempting repair.`);
-          const repairedScoreJson = jsonrepair(scoreText);
-          const score = JSON.parse(repairedScoreJson);
-          allScores.push(score);
-          console.log(`Repaired and added score for ${date} at ${time}`);
-        }
-      }
-    }
-
+    console.log("Generating batch scores");
+    const allScores = await generateBatchScores(dataByDate, profileId, accountId);
     console.log(`Total scores generated: ${allScores.length}`);
-    console.log("API LLM Scores: ", JSON.stringify({ scores: allScores }));
 
     //1.  Enhanced analysis prompt with more detailed requirements
     const analysisPrompt = `Analyze this health data and provide insights in JSON format. Include detailed sections for activity patterns, sleep quality, and mental wellbeing indicators.
@@ -333,4 +348,6 @@ export async function POST(req: Request) {
     }, { status: 500 });
   }
 }
+
+
 
