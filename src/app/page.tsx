@@ -6,6 +6,8 @@ import React, { useState, useEffect } from "react";
 import { ScrollText } from "lucide-react"
 import { DataColumn, SahhaLogo } from './components/DataComparisonComponents';
 import { HealthDataGenerator } from './components/HealthDataGenerator';
+import { RawData_LLM_PROMPT } from './components/utils/healthDataStore';
+import { sahha_LLM_PROMPT } from './components/utils/healthDataStore';
 
 export default function Home() {
   const [Sahha_healthData, setHealthData] = useState<string>("");
@@ -38,15 +40,14 @@ export default function Home() {
             <DataColumn 
               icon={<ScrollText className="h-6 w-6" />}
               title="Raw Data"
-              systemPrompt="You are an AI assistant specialised in analysing raw health data and providing clear, informative explanations. Your primary function is to interpret various types of health data, identify patterns or anomalies, and explain their potential significance in easy-to-understand terms..."
+              systemPrompt={RawData_LLM_PROMPT}
             />
             {/* LLM: Inference: Sahha Data */}
             <DataColumn 
               icon={<SahhaLogo />}
-              title="Sahha Data"
-            
-              systemPrompt="You are an AI assistant specialised in analysing Sahha health data and providing clear, informative explanations. Your primary function is to interpret various types of health data, identify patterns or anomalies, and explain their potential significance in easy-to-understand terms..."
-            />
+              title='Sahha Data'
+              systemPrompt={sahha_LLM_PROMPT}
+            />  
           </div>
         </div>
       </div>

@@ -2,6 +2,8 @@
 import { NextResponse } from 'next/server';
 import { Anthropic } from '@anthropic-ai/sdk';
 import { jsonrepair } from 'jsonrepair';
+import fs from 'fs/promises';
+import path from 'path';
 
 
 if (!process.env.ANTHROPIC_API_KEY) {
@@ -84,7 +86,7 @@ async function generateBatchScores(dataByDate: Record<string, any[]>, profileId:
     console.log(`Sending batch request to Anthropic API for dates: ${batchDates.join(', ')}`);
     const response = await anthropic.messages.create({
       model: 'claude-3-sonnet-20240229',
-      max_tokens: 4000,
+      max_tokens: 4096,
       messages: [{ role: 'user', content: batchPrompt }],
       system: "Always respond with valid JSON containing an array of scores.",
     });
@@ -100,6 +102,7 @@ async function generateBatchScores(dataByDate: Record<string, any[]>, profileId:
       console.error("Failed to parse JSON. Attempting repair.");
       const repairedScoresJson = jsonrepair(scoresText);
       batchScores = JSON.parse(repairedScoresJson);
+      console.error("Repaired.");
     }
 
     // Ensure batchScores is an array
@@ -193,7 +196,7 @@ export async function POST(req: Request) {
 
     const analysisResponse = await anthropic.messages.create({
       model: 'claude-3-sonnet-20240229',
-      max_tokens: 1500,
+      max_tokens: 4096,
       messages: [{ role: 'user', content: analysisPrompt }],
       system: "Always respond with valid JSON.",
     });
@@ -254,7 +257,7 @@ export async function POST(req: Request) {
 
     const scoreResponse = await anthropic.messages.create({
       model: 'claude-3-sonnet-20240229',
-      max_tokens: 1500,
+      max_tokens: 4096,
       messages: [{ role: 'user', content: scorePrompt }],
       system: "Always respond with valid JSON without any markdown formatting.",
     });
@@ -317,7 +320,7 @@ export async function POST(req: Request) {
     // console.log("API LLM Biomarkers: ", repairedBiomarkersJson);
     // const biomarkers = JSON.parse(repairedBiomarkersJson);
 
-    return NextResponse.json({
+    const outputData = {
       sahhaScores: { scores: allScores },
       // biomarkers: biomarkers,
       analysis: analysis,
@@ -333,7 +336,22 @@ export async function POST(req: Request) {
           confidence: 0.85
         }
       }
-    });
+    };
+
+    // Save the output to a file
+    const outputDir = path.join(process.cwd(), 'output');
+    const outputFileName = `sahha_analysis_${new Date().toISOString().replace(/:/g, '-')}.json`;
+    const outputPath = path.join(outputDir, outputFileName);
+
+    try {
+      await fs.mkdir(outputDir, { recursive: true });
+      await fs.writeFile(outputPath, JSON.stringify(outputData, null, 2));
+      console.log(`Output saved to: ${outputPath}`);
+    } catch (error) {
+      console.error('Error saving output file:', error);
+    }
+
+    return NextResponse.json(outputData);
 
   } catch (error) {
     console.error('Error processing request:', error);
@@ -348,6 +366,9 @@ export async function POST(req: Request) {
     }, { status: 500 });
   }
 }
+
+
+
 
 
 

@@ -5,7 +5,8 @@ import ReactJson from 'react-json-view';
 import { Header } from './DataComparisonComponents';
 import HealthVisualisation from './HealthVisualisation'; // Import the HealthVisualisation component
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../components/ui/tooltip";
-import { generateSahha } from './generateSahha';
+import { generateSahha } from './utils/generateSahha';
+import { setterRawData } from '../components/utils/healthDataStore';
 
 // Match exact values expected by Python script
 type ActivityLevel = 'very_active' | 'active' | 'moderately_active' | 'sedentary';
@@ -15,12 +16,14 @@ const ConfigSection = () => {
   const [activity_level, setActivityLevel] = useState<ActivityLevel>('moderately_active');
   const [exercise_type, setExerciseType] = useState<ExerciseType>('cardio');
   const [days, setDays] = useState(7);
-  const [generatedData, setGeneratedData] = useState<any>(null);
   const [isExpanded, setIsExpanded] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isRawDataGenerated, setIsRawDataGenerated] = useState(false);
+  const [generatedRawData, setGeneratedRawData] = useState<any>(null);
+
   const [generatedSahhaData, setGeneratedSahhaData] = useState<any>(null);
+
   const [isGeneratingSahha, setIsGeneratingSahha] = useState(false);
   const [isSahhaGenerated, setIsSahhaGenerated] = useState(false);
 
@@ -46,8 +49,9 @@ const ConfigSection = () => {
       }
   
       const data = await response.json();
-      setGeneratedData(data);
-      setIsExpanded(true);
+      setterRawData(data); // Use the setter function
+      setGeneratedRawData(data);
+      // setIsExpanded(true);
       setIsRawDataGenerated(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to generate data');
@@ -61,7 +65,8 @@ const ConfigSection = () => {
     setIsGeneratingSahha(true);
     setError(null);
     try {
-      const result = await generateSahha(generatedData);
+      // Ensure generatedRawData is used correctly here
+      const result = await generateSahha(generatedRawData);
       if (result.success) {
         setGeneratedSahhaData(result.data);
         setIsSahhaGenerated(true);
@@ -185,7 +190,7 @@ const ConfigSection = () => {
         </div>
       )}
 
-      {(generatedData || generatedSahhaData) && (
+      {(generatedRawData || generatedSahhaData) && (
         <div className="mt-8">
           <button
             onClick={() => setIsExpanded(!isExpanded)}
@@ -206,7 +211,7 @@ const ConfigSection = () => {
                   <h4 className="font-semibold mb-2">Raw Data</h4>
                   <div className="bg-gray-100 p-4 rounded-xl">
                     <ReactJson
-                      src={generatedData}
+                      src={generatedRawData}
                       theme="rjv-default"
                       displayDataTypes={false}
                       name={false}
@@ -229,7 +234,7 @@ const ConfigSection = () => {
                   </div>
                 )}
               </div>
-              <HealthVisualisation data={generatedData} />
+              <HealthVisualisation data={generatedRawData} />
             </>
           )}
         </div>
@@ -243,7 +248,7 @@ export const HealthDataGenerator = () => {
     <div className="bg-[#333332] rounded-2xl p-4 md:p-8 mb-8">
       <div className="bg-white font-mono rounded-2xl shadow-md overflow-hidden">
         <div className="p-6">
-          <Header icon={<Database className="h-6 w-6" />} title="Raw Dataset Generator" />
+          <Header icon={<Database className="h-6 w-6" />} title="Health Data Generator" />
           <ConfigSection />
         </div>
       </div>

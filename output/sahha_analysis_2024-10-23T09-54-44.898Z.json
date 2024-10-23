@@ -1,0 +1,1693 @@
+{
+  "sahhaScores": {
+    "scores": [
+      [
+        {
+          "id": "c9b96c74-f81d-4d8f-94cf-daf60543f7f4",
+          "profileId": "c3f06b8e-9746-4fe8-8be9-82beee64cf39",
+          "accountId": "61ddcd03-0f37-40dd-85bd-dadae45cb62f",
+          "type": "activity",
+          "score": 0.35,
+          "state": "low",
+          "factors": [
+            {
+              "name": "steps",
+              "value": 696.830825,
+              "goal": 10000,
+              "unit": "count",
+              "score": 0.07,
+              "state": "minimal"
+            },
+            {
+              "name": "active_hours",
+              "value": 3.15,
+              "goal": 12,
+              "unit": "hour",
+              "score": 0.26,
+              "state": "low"
+            },
+            {
+              "name": "active_calories",
+              "value": 32.906054,
+              "goal": 500,
+              "unit": "kcal",
+              "score": 0.07,
+              "state": "minimal"
+            },
+            {
+              "name": "intense_activity_duration",
+              "value": 188.318372,
+              "goal": 30,
+              "unit": "minute",
+              "score": 1,
+              "state": "high"
+            },
+            {
+              "name": "extended_inactivity",
+              "value": 0,
+              "goal": 240,
+              "unit": "hour",
+              "score": 1,
+              "state": "high"
+            },
+            {
+              "name": "floors_climbed",
+              "value": 0.311558,
+              "goal": 10,
+              "unit": "floor",
+              "score": 0.03,
+              "state": "minimal"
+            }
+          ],
+          "dataSources": [
+            "HKQuantityTypeIdentifierStepCount",
+            "HKQuantityTypeIdentifierDistanceWalkingRunning",
+            "HKQuantityTypeIdentifierActiveEnergyBurned",
+            "HKQuantityTypeIdentifierAppleExerciseTime",
+            "HKQuantityTypeIdentifierFlightsClimbed"
+          ],
+          "scoreDateTime": "2024-10-23T06:00:00",
+          "version": 1
+        },
+        {
+          "id": "aec18105-f31c-4ff0-9a31-e1fea2c11afd",
+          "profileId": "c3f06b8e-9746-4fe8-8be9-82beee64cf39",
+          "accountId": "61ddcd03-0f37-40dd-85bd-dadae45cb62f",
+          "type": "activity",
+          "score": 0.43,
+          "state": "medium",
+          "factors": [
+            {
+              "name": "steps",
+              "value": 222.550942,
+              "goal": 10000,
+              "unit": "count",
+              "score": 0.02,
+              "state": "minimal"
+            },
+            {
+              "name": "active_hours",
+              "value": 6,
+              "goal": 12,
+              "unit": "hour",
+              "score": 0.5,
+              "state": "medium"
+            },
+            {
+              "name": "active_calories",
+              "value": 43.55786,
+              "goal": 500,
+              "unit": "kcal",
+              "score": 0.09,
+              "state": "minimal"
+            },
+            {
+              "name": "intense_activity_duration",
+              "value": 71.085584,
+              "goal": 30,
+              "unit": "minute",
+              "score": 0.71,
+              "state": "high"
+            },
+            {
+              "name": "extended_inactivity",
+              "value": 0,
+              "goal": 240,
+              "unit": "hour",
+              "score": 1,
+              "state": "high"
+            },
+            {
+              "name": "floors_climbed",
+              "value": 0.095377,
+              "goal": 10,
+              "unit": "floor",
+              "score": 0.01,
+              "state": "minimal"
+            }
+          ],
+          "dataSources": [
+            "HKQuantityTypeIdentifierStepCount",
+            "HKQuantityTypeIdentifierDistanceWalkingRunning",
+            "HKQuantityTypeIdentifierActiveEnergyBurned",
+            "HKQuantityTypeIdentifierAppleExerciseTime",
+            "HKQuantityTypeIdentifierFlightsClimbed"
+          ],
+          "scoreDateTime": "2024-10-23T12:00:00",
+          "version": 1
+        },
+        {
+          "id": "a18cbacc-4be9-4f7d-afc3-b864b5c4f5d8",
+          "profileId": "c3f06b8e-9746-4fe8-8be9-82beee64cf39",
+          "accountId": "61ddcd03-0f37-40dd-85bd-dadae45cb62f",
+          "type": "activity",
+          "score": 0.78,
+          "state": "high",
+          "factors": [
+            {
+              "name": "steps",
+              "value": 874.994298,
+              "goal": 10000,
+              "unit": "count",
+              "score": 0.09,
+              "state": "minimal"
+            },
+            {
+              "name": "active_hours",
+              "value": 10,
+              "goal": 12,
+              "unit": "hour",
+              "score": 0.83,
+              "state": "high"
+            },
+            {
+              "name": "active_calories",
+              "value": 86.51803,
+              "goal": 500,
+              "unit": "kcal",
+              "score": 0.17,
+              "state": "low"
+            },
+            {
+              "name": "intense_activity_duration",
+              "value": 190.611887,
+              "goal": 30,
+              "unit": "minute",
+              "score": 1,
+              "state": "high"
+            },
+            {
+              "name": "extended_inactivity",
+              "value": 1,
+              "goal": 240,
+              "unit": "hour",
+              "score": 1,
+              "state": "high"
+            },
+            {
+              "name": "floors_climbed",
+              "value": 0.720255,
+              "goal": 10,
+              "unit": "floor",
+              "score": 0.07,
+              "state": "minimal"
+            }
+          ],
+          "dataSources": [
+            "HKQuantityTypeIdentifierStepCount",
+            "HKQuantityTypeIdentifierDistanceWalkingRunning",
+            "HKQuantityTypeIdentifierActiveEnergyBurned",
+            "HKQuantityTypeIdentifierAppleExerciseTime",
+            "HKQuantityTypeIdentifierFlightsClimbed"
+          ],
+          "scoreDateTime": "2024-10-23T18:00:00",
+          "version": 1
+        },
+        {
+          "id": "d652abac-f937-45f2-bc03-a34a76c0d861",
+          "profileId": "c3f06b8e-9746-4fe8-8be9-82beee64cf39",
+          "accountId": "61ddcd03-0f37-40dd-85bd-dadae45cb62f",
+          "type": "activity",
+          "score": 0.17,
+          "state": "minimal",
+          "factors": [
+            {
+              "name": "steps",
+              "value": 43.644188,
+              "goal": 10000,
+              "unit": "count",
+              "score": 0,
+              "state": "minimal"
+            },
+            {
+              "name": "active_hours",
+              "value": 1,
+              "goal": 12,
+              "unit": "hour",
+              "score": 0.08,
+              "state": "minimal"
+            },
+            {
+              "name": "active_calories",
+              "value": 1.642741,
+              "goal": 500,
+              "unit": "kcal",
+              "score": 0,
+              "state": "minimal"
+            },
+            {
+              "name": "intense_activity_duration",
+              "value": 0.659326,
+              "goal": 30,
+              "unit": "minute",
+              "score": 0.02,
+              "state": "minimal"
+            },
+            {
+              "name": "extended_inactivity",
+              "value": 0,
+              "goal": 240,
+              "unit": "hour",
+              "score": 1,
+              "state": "high"
+            },
+            {
+              "name": "floors_climbed",
+              "value": 0.008531,
+              "goal": 10,
+              "unit": "floor",
+              "score": 0,
+              "state": "minimal"
+            }
+          ],
+          "dataSources": [
+            "HKQuantityTypeIdentifierStepCount",
+            "HKQuantityTypeIdentifierDistanceWalkingRunning",
+            "HKQuantityTypeIdentifierActiveEnergyBurned",
+            "HKQuantityTypeIdentifierAppleExerciseTime",
+            "HKQuantityTypeIdentifierFlightsClimbed"
+          ],
+          "scoreDateTime": "2024-10-23T23:59:00",
+          "version": 1
+        },
+        {
+          "id": "74d41a10-53cf-4e83-8cac-dda1faf7b22e",
+          "profileId": "c3f06b8e-9746-4fe8-8be9-82beee64cf39",
+          "accountId": "61ddcd03-0f37-40dd-85bd-dadae45cb62f",
+          "type": "activity",
+          "score": 0.55,
+          "state": "medium",
+          "factors": [
+            {
+              "name": "steps",
+              "value": 314.842343,
+              "goal": 10000,
+              "unit": "count",
+              "score": 0.03,
+              "state": "minimal"
+            },
+            {
+              "name": "active_hours",
+              "value": 6,
+              "goal": 12,
+              "unit": "hour",
+              "score": 0.5,
+              "state": "medium"
+            },
+            {
+              "name": "active_calories",
+              "value": 85.079834,
+              "goal": 500,
+              "unit": "kcal",
+              "score": 0.17,
+              "state": "low"
+            },
+            {
+              "name": "intense_activity_duration",
+              "value": 181.088218,
+              "goal": 30,
+              "unit": "minute",
+              "score": 1,
+              "state": "high"
+            },
+            {
+              "name": "extended_inactivity",
+              "value": 0,
+              "goal": 240,
+              "unit": "hour",
+              "score": 1,
+              "state": "high"
+            },
+            {
+              "name": "floors_climbed",
+              "value": 0.081197,
+              "goal": 10,
+              "unit": "floor",
+              "score": 0.01,
+              "state": "minimal"
+            }
+          ],
+          "dataSources": [
+            "HKQuantityTypeIdentifierStepCount",
+            "HKQuantityTypeIdentifierDistanceWalkingRunning",
+            "HKQuantityTypeIdentifierActiveEnergyBurned",
+            "HKQuantityTypeIdentifierAppleExerciseTime",
+            "HKQuantityTypeIdentifierFlightsClimbed"
+          ],
+          "scoreDateTime": "2024-10-24T06:00:00",
+          "version": 1
+        },
+        {
+          "id": "cabc9d75-212b-46e7-be59-dff362e754c2",
+          "profileId": "c3f06b8e-9746-4fe8-8be9-82beee64cf39",
+          "accountId": "61ddcd03-0f37-40dd-85bd-dadae45cb62f",
+          "type": "activity",
+          "score": 0.37,
+          "state": "low",
+          "factors": [
+            {
+              "name": "steps",
+              "value": 422.717548,
+              "goal": 10000,
+              "unit": "count",
+              "score": 0.04,
+              "state": "minimal"
+            },
+            {
+              "name": "active_hours",
+              "value": 4,
+              "goal": 12,
+              "unit": "hour",
+              "score": 0.33,
+              "state": "low"
+            },
+            {
+              "name": "active_calories",
+              "value": 97.796144,
+              "goal": 500,
+              "unit": "kcal",
+              "score": 0.2,
+              "state": "low"
+            },
+            {
+              "name": "intense_activity_duration",
+              "value": 23.566501,
+              "goal": 30,
+              "unit": "minute",
+              "score": 0.24,
+              "state": "low"
+            },
+            {
+              "name": "extended_inactivity",
+              "value": 0,
+              "goal": 240,
+              "unit": "hour",
+              "score": 1,
+              "state": "high"
+            },
+            {
+              "name": "floors_climbed",
+              "value": 0.174261,
+              "goal": 10,
+              "unit": "floor",
+              "score": 0.02,
+              "state": "minimal"
+            }
+          ],
+          "dataSources": [
+            "HKQuantityTypeIdentifierStepCount",
+            "HKQuantityTypeIdentifierDistanceWalkingRunning",
+            "HKQuantityTypeIdentifierActiveEnergyBurned",
+            "HKQuantityTypeIdentifierAppleExerciseTime",
+            "HKQuantityTypeIdentifierFlightsClimbed"
+          ],
+          "scoreDateTime": "2024-10-24T12:00:00",
+          "version": 1
+        },
+        {
+          "id": "d0bf3f3b-ac42-4b6b-9a15-c0f736774ed5",
+          "profileId": "c3f06b8e-9746-4fe8-8be9-82beee64cf39",
+          "accountId": "61ddcd03-0f37-40dd-85bd-dadae45cb62f",
+          "type": "activity",
+          "score": 0.7,
+          "state": "high",
+          "factors": [
+            {
+              "name": "steps",
+              "value": 845.075682,
+              "goal": 10000,
+              "unit": "count",
+              "score": 0.08,
+              "state": "minimal"
+            },
+            {
+              "name": "active_hours",
+              "value": 10,
+              "goal": 12,
+              "unit": "hour",
+              "score": 0.83,
+              "state": "high"
+            },
+            {
+              "name": "active_calories",
+              "value": 93.289248,
+              "goal": 500,
+              "unit": ""
+            }
+          ]
+        }
+      ],
+      {
+        "id": "2b3efe5e-1d6e-49cf-9a1e-05c44b389cb7",
+        "profileId": "c3f06b8e-9746-4fe8-8be9-82beee64cf39",
+        "accountId": "61ddcd03-0f37-40dd-85bd-dadae45cb62f",
+        "type": "activity",
+        "score": 0.2,
+        "state": "low",
+        "factors": [
+          {
+            "name": "steps",
+            "value": 1000,
+            "goal": 10000,
+            "unit": "count",
+            "score": 0.1,
+            "state": "minimal"
+          },
+          {
+            "name": "active_hours",
+            "value": 1,
+            "goal": 12,
+            "unit": "hour",
+            "score": 0.08,
+            "state": "minimal"
+          },
+          {
+            "name": "active_calories",
+            "value": 50,
+            "goal": 500,
+            "unit": "kcal",
+            "score": 0.1,
+            "state": "minimal"
+          },
+          {
+            "name": "intense_activity_duration",
+            "value": 5,
+            "goal": 30,
+            "unit": "minute",
+            "score": 0.17,
+            "state": "low"
+          },
+          {
+            "name": "extended_inactivity",
+            "value": 8,
+            "goal": 240,
+            "unit": "hour",
+            "score": 0.97,
+            "state": "high"
+          },
+          {
+            "name": "floors_climbed",
+            "value": 0,
+            "goal": 10,
+            "unit": "floor",
+            "score": 0,
+            "state": "minimal"
+          }
+        ],
+        "dataSources": [
+          "HKQuantityTypeIdentifierStepCount",
+          "HKQuantityTypeIdentifierDistanceWalkingRunning",
+          "HKQuantityTypeIdentifierActiveEnergyBurned",
+          "HKQuantityTypeIdentifierAppleExerciseTime",
+          "HKQuantityTypeIdentifierFlightsClimbed"
+        ],
+        "scoreDateTime": "2024-10-25T06:00:00Z",
+        "version": 1
+      },
+      {
+        "id": "8c98defe-7cdd-4dd0-a501-2498ec2c6c85",
+        "profileId": "c3f06b8e-9746-4fe8-8be9-82beee64cf39",
+        "accountId": "61ddcd03-0f37-40dd-85bd-dadae45cb62f",
+        "type": "activity",
+        "score": 0.6,
+        "state": "medium",
+        "factors": [
+          {
+            "name": "steps",
+            "value": 6000,
+            "goal": 10000,
+            "unit": "count",
+            "score": 0.6,
+            "state": "medium"
+          },
+          {
+            "name": "active_hours",
+            "value": 5,
+            "goal": 12,
+            "unit": "hour",
+            "score": 0.42,
+            "state": "low"
+          },
+          {
+            "name": "active_calories",
+            "value": 300,
+            "goal": 500,
+            "unit": "kcal",
+            "score": 0.6,
+            "state": "medium"
+          },
+          {
+            "name": "intense_activity_duration",
+            "value": 20,
+            "goal": 30,
+            "unit": "minute",
+            "score": 0.67,
+            "state": "medium"
+          },
+          {
+            "name": "extended_inactivity",
+            "value": 2,
+            "goal": 240,
+            "unit": "hour",
+            "score": 0.99,
+            "state": "high"
+          },
+          {
+            "name": "floors_climbed",
+            "value": 5,
+            "goal": 10,
+            "unit": "floor",
+            "score": 0.5,
+            "state": "medium"
+          }
+        ],
+        "dataSources": [
+          "HKQuantityTypeIdentifierStepCount",
+          "HKQuantityTypeIdentifierDistanceWalkingRunning",
+          "HKQuantityTypeIdentifierActiveEnergyBurned",
+          "HKQuantityTypeIdentifierAppleExerciseTime",
+          "HKQuantityTypeIdentifierFlightsClimbed"
+        ],
+        "scoreDateTime": "2024-10-25T12:00:00Z",
+        "version": 1
+      },
+      {
+        "id": "b7342a79-48d0-41f3-88ec-adfb65951548",
+        "profileId": "c3f06b8e-9746-4fe8-8be9-82beee64cf39",
+        "accountId": "61ddcd03-0f37-40dd-85bd-dadae45cb62f",
+        "type": "activity",
+        "score": 0.75,
+        "state": "high",
+        "factors": [
+          {
+            "name": "steps",
+            "value": 8000,
+            "goal": 10000,
+            "unit": "count",
+            "score": 0.8,
+            "state": "high"
+          },
+          {
+            "name": "active_hours",
+            "value": 8,
+            "goal": 12,
+            "unit": "hour",
+            "score": 0.67,
+            "state": "medium"
+          },
+          {
+            "name": "active_calories",
+            "value": 400,
+            "goal": 500,
+            "unit": "kcal",
+            "score": 0.8,
+            "state": "high"
+          },
+          {
+            "name": "intense_activity_duration",
+            "value": 40,
+            "goal": 30,
+            "unit": "minute",
+            "score": 1,
+            "state": "high"
+          },
+          {
+            "name": "extended_inactivity",
+            "value": 1,
+            "goal": 240,
+            "unit": "hour",
+            "score": 1,
+            "state": "high"
+          },
+          {
+            "name": "floors_climbed",
+            "value": 8,
+            "goal": 10,
+            "unit": "floor",
+            "score": 0.8,
+            "state": "high"
+          }
+        ],
+        "dataSources": [
+          "HKQuantityTypeIdentifierStepCount",
+          "HKQuantityTypeIdentifierDistanceWalkingRunning",
+          "HKQuantityTypeIdentifierActiveEnergyBurned",
+          "HKQuantityTypeIdentifierAppleExerciseTime",
+          "HKQuantityTypeIdentifierFlightsClimbed"
+        ],
+        "scoreDateTime": "2024-10-25T18:00:00Z",
+        "version": 1
+      },
+      {
+        "id": "84d55b97-7ed5-4f0c-b93e-1d9e4d4dfcc1",
+        "profileId": "c3f06b8e-9746-4fe8-8be9-82beee64cf39",
+        "accountId": "61ddcd03-0f37-40dd-85bd-dadae45cb62f",
+        "type": "activity",
+        "score": 0.25,
+        "state": "low",
+        "factors": [
+          {
+            "name": "steps",
+            "value": 1500,
+            "goal": 10000,
+            "unit": "count",
+            "score": 0.15,
+            "state": "low"
+          },
+          {
+            "name": "active_hours",
+            "value": 1,
+            "goal": 12,
+            "unit": "hour",
+            "score": 0.08,
+            "state": "minimal"
+          },
+          {
+            "name": "active_calories",
+            "value": 100,
+            "goal": 500,
+            "unit": "kcal",
+            "score": 0.2,
+            "state": "low"
+          },
+          {
+            "name": "intense_activity_duration",
+            "value": 10,
+            "goal": 30,
+            "unit": "minute",
+            "score": 0.33,
+            "state": "medium"
+          },
+          {
+            "name": "extended_inactivity",
+            "value": 6,
+            "goal": 240,
+            "unit": "hour",
+            "score": 0.98,
+            "state": "high"
+          },
+          {
+            "name": "floors_climbed",
+            "value": 1,
+            "goal": 10,
+            "unit": "floor",
+            "score": 0.1,
+            "state": "minimal"
+          }
+        ],
+        "dataSources": [
+          "HKQuantityTypeIdentifierStepCount",
+          "HKQuantityTypeIdentifierDistanceWalkingRunning",
+          "HKQuantityTypeIdentifierActiveEnergyBurned",
+          "HKQuantityTypeIdentifierAppleExerciseTime",
+          "HKQuantityTypeIdentifierFlightsClimbed"
+        ],
+        "scoreDateTime": "2024-10-25T23:59:00Z",
+        "version": 1
+      },
+      {
+        "id": "2ddc52c5-3d81-45a2-a31c-2e69aeb554bb",
+        "profileId": "c3f06b8e-9746-4fe8-8be9-82beee64cf39",
+        "accountId": "61ddcd03-0f37-40dd-85bd-dadae45cb62f",
+        "type": "activity",
+        "score": 0.15,
+        "state": "low",
+        "factors": [
+          {
+            "name": "steps",
+            "value": 500,
+            "goal": 10000,
+            "unit": "count",
+            "score": 0.05,
+            "state": "minimal"
+          },
+          {
+            "name": "active_hours",
+            "value": 1,
+            "goal": 12,
+            "unit": "hour",
+            "score": 0.08,
+            "state": "minimal"
+          },
+          {
+            "name": "active_calories",
+            "value": 50,
+            "goal": 500,
+            "unit": "kcal",
+            "score": 0.1,
+            "state": "minimal"
+          },
+          {
+            "name": "intense_activity_duration",
+            "value": 0,
+            "goal": 30,
+            "unit": "minute",
+            "score": 0,
+            "state": "minimal"
+          },
+          {
+            "name": "extended_inactivity",
+            "value": 10,
+            "goal": 240,
+            "unit": "hour",
+            "score": 0.96,
+            "state": "high"
+          },
+          {
+            "name": "floors_climbed",
+            "value": 0,
+            "goal": 10,
+            "unit": "floor",
+            "score": 0,
+            "state": "minimal"
+          }
+        ],
+        "dataSources": [
+          "HKQuantityTypeIdentifierStepCount",
+          "HKQuantityTypeIdentifierDistanceWalkingRunning",
+          "HKQuantityTypeIdentifierActiveEnergyBurned",
+          "HKQuantityTypeIdentifierAppleExerciseTime",
+          "HKQuantityTypeIdentifierFlightsClimbed"
+        ],
+        "scoreDateTime": "2024-10-26T06:00:00Z",
+        "version": 1
+      },
+      {
+        "id": "e06b2d9e-7754-4f31-9e2a-d0cc3e73feb5",
+        "profileId": "c3f06b8e-9746-4fe8-8be9-82beee64cf39",
+        "accountId": "61ddcd03-0f37-40dd-85bd-dadae45cb62f",
+        "type": "activity",
+        "score": 0.65,
+        "state": "medium",
+        "factors": [
+          {
+            "name": "steps",
+            "value": 7000,
+            "goal": 10000,
+            "unit": "count",
+            "score": 0.7,
+            "state": "medium"
+          },
+          {
+            "name": "active_hours",
+            "value": 6,
+            "goal": 12,
+            "unit": "hour",
+            "score": 0.5,
+            "state": "medium"
+          },
+          {
+            "name": "active_calories",
+            "value": 350,
+            "goal": 500,
+            "unit": "kcal",
+            "score": 0.7,
+            "state": "medium"
+          },
+          {
+            "name": "intense_activity_duration",
+            "value": 30,
+            "goal": 30,
+            "unit": "minute",
+            "score": 1,
+            "state": "high"
+          },
+          {
+            "name": "extended_inactivity",
+            "value": 2,
+            "goal": 240,
+            "unit": "hour",
+            "score": 0.99,
+            "state": "high"
+          },
+          {
+            "name": "floors_climbed",
+            "value": 4,
+            "goal": 10,
+            "unit": "floor",
+            "score": 0.4,
+            "state": "medium"
+          }
+        ],
+        "dataSources": [
+          "HKQuantityTypeIdentifierStepCount",
+          "HKQuantityTypeIdentifierDistanceWalkingRunning",
+          "HKQuantityTypeIdentifierActiveEnergyBurned",
+          "HKQuantityTypeIdentifierAppleExerciseTime",
+          "HKQuantityTypeIdentifierFlightsClimbed"
+        ],
+        "scoreDateTime": "2024-10-26T12:00:00Z",
+        "version": 1
+      },
+      {
+        "id": "fdf9c33c-5bd6-4105-aef4-9d39eb963447",
+        "profileId": "c3f06b8e-9746-4fe8-8be9-82beee64cf39",
+        "accountId": "61ddcd03-0f37-40dd-85bd-dadae45cb62f",
+        "type": "activity",
+        "score": 0.8,
+        "state": "high",
+        "factors": [
+          {
+            "name": "steps",
+            "value": 9000,
+            "goal": 10000,
+            "unit": "count",
+            "score": 0.9,
+            "state": "high"
+          },
+          {
+            "name": "active_hours",
+            "value": 9,
+            "goal": 12,
+            "unit": "hour",
+            "score": 0.75,
+            "state": "high"
+          },
+          {
+            "name": "active_calories",
+            "value": 450,
+            "goal": 500,
+            "unit": "kcal",
+            "score": 0.9,
+            "state": "high"
+          },
+          {
+            "name": "intense_activity_duration",
+            "value": 50,
+            "goal": 30,
+            "unit": "minute",
+            "score": 1,
+            "state": "high"
+          },
+          {
+            "name": "extended_inactivity",
+            "value": 1,
+            "goal": 240,
+            "unit": "hour",
+            "score": null
+          }
+        ]
+      },
+      {
+        "id": "a9e79c9d-5c5d-4cef-a6e8-1cefcd9d7d8a",
+        "profileId": "c3f06b8e-9746-4fe8-8be9-82beee64cf39",
+        "accountId": "61ddcd03-0f37-40dd-85bd-dadae45cb62f",
+        "type": "activity",
+        "score": 0.25,
+        "state": "low",
+        "factors": [
+          {
+            "name": "steps",
+            "value": 1500,
+            "goal": 10000,
+            "unit": "count",
+            "score": 0.15,
+            "state": "minimal"
+          },
+          {
+            "name": "active_hours",
+            "value": 0.5,
+            "goal": 12,
+            "unit": "hour",
+            "score": 0.04,
+            "state": "minimal"
+          },
+          {
+            "name": "active_calories",
+            "value": 80,
+            "goal": 500,
+            "unit": "kcal",
+            "score": 0.16,
+            "state": "minimal"
+          },
+          {
+            "name": "intense_activity_duration",
+            "value": 0,
+            "goal": 30,
+            "unit": "minute",
+            "score": 0,
+            "state": "minimal"
+          },
+          {
+            "name": "extended_inactivity",
+            "value": 6,
+            "goal": 240,
+            "unit": "hour",
+            "score": 0.98,
+            "state": "high"
+          },
+          {
+            "name": "floors_climbed",
+            "value": 0,
+            "goal": 10,
+            "unit": "floor",
+            "score": 0,
+            "state": "minimal"
+          }
+        ],
+        "dataSources": [
+          "HKQuantityTypeIdentifierStepCount",
+          "HKQuantityTypeIdentifierDistanceWalkingRunning",
+          "HKQuantityTypeIdentifierActiveEnergyBurned",
+          "HKQuantityTypeIdentifierAppleExerciseTime",
+          "HKQuantityTypeIdentifierFlightsClimbed"
+        ],
+        "scoreDateTime": "2024-10-27T06:00:00Z",
+        "version": 1
+      },
+      {
+        "id": "ad7fa605-4eeb-4be8-b446-60a02ae9a811",
+        "profileId": "c3f06b8e-9746-4fe8-8be9-82beee64cf39",
+        "accountId": "61ddcd03-0f37-40dd-85bd-dadae45cb62f",
+        "type": "activity",
+        "score": 0.65,
+        "state": "medium",
+        "factors": [
+          {
+            "name": "steps",
+            "value": 5000,
+            "goal": 10000,
+            "unit": "count",
+            "score": 0.5,
+            "state": "medium"
+          },
+          {
+            "name": "active_hours",
+            "value": 4,
+            "goal": 12,
+            "unit": "hour",
+            "score": 0.33,
+            "state": "low"
+          },
+          {
+            "name": "active_calories",
+            "value": 200,
+            "goal": 500,
+            "unit": "kcal",
+            "score": 0.4,
+            "state": "low"
+          },
+          {
+            "name": "intense_activity_duration",
+            "value": 30,
+            "goal": 30,
+            "unit": "minute",
+            "score": 1,
+            "state": "high"
+          },
+          {
+            "name": "extended_inactivity",
+            "value": 1,
+            "goal": 240,
+            "unit": "hour",
+            "score": 0.99,
+            "state": "high"
+          },
+          {
+            "name": "floors_climbed",
+            "value": 5,
+            "goal": 10,
+            "unit": "floor",
+            "score": 0.5,
+            "state": "medium"
+          }
+        ],
+        "dataSources": [
+          "HKQuantityTypeIdentifierStepCount",
+          "HKQuantityTypeIdentifierDistanceWalkingRunning",
+          "HKQuantityTypeIdentifierActiveEnergyBurned",
+          "HKQuantityTypeIdentifierAppleExerciseTime",
+          "HKQuantityTypeIdentifierFlightsClimbed"
+        ],
+        "scoreDateTime": "2024-10-27T12:00:00Z",
+        "version": 1
+      },
+      {
+        "id": "bfc9a4d6-d7ab-4c13-b1f8-f6d04e03b2bc",
+        "profileId": "c3f06b8e-9746-4fe8-8be9-82beee64cf39",
+        "accountId": "61ddcd03-0f37-40dd-85bd-dadae45cb62f",
+        "type": "activity",
+        "score": 0.75,
+        "state": "high",
+        "factors": [
+          {
+            "name": "steps",
+            "value": 8000,
+            "goal": 10000,
+            "unit": "count",
+            "score": 0.8,
+            "state": "high"
+          },
+          {
+            "name": "active_hours",
+            "value": 6,
+            "goal": 12,
+            "unit": "hour",
+            "score": 0.5,
+            "state": "medium"
+          },
+          {
+            "name": "active_calories",
+            "value": 400,
+            "goal": 500,
+            "unit": "kcal",
+            "score": 0.8,
+            "state": "high"
+          },
+          {
+            "name": "intense_activity_duration",
+            "value": 60,
+            "goal": 30,
+            "unit": "minute",
+            "score": 1,
+            "state": "high"
+          },
+          {
+            "name": "extended_inactivity",
+            "value": 0,
+            "goal": 240,
+            "unit": "hour",
+            "score": 1,
+            "state": "high"
+          },
+          {
+            "name": "floors_climbed",
+            "value": 12,
+            "goal": 10,
+            "unit": "floor",
+            "score": 1,
+            "state": "high"
+          }
+        ],
+        "dataSources": [
+          "HKQuantityTypeIdentifierStepCount",
+          "HKQuantityTypeIdentifierDistanceWalkingRunning",
+          "HKQuantityTypeIdentifierActiveEnergyBurned",
+          "HKQuantityTypeIdentifierAppleExerciseTime",
+          "HKQuantityTypeIdentifierFlightsClimbed"
+        ],
+        "scoreDateTime": "2024-10-27T18:00:00Z",
+        "version": 1
+      },
+      {
+        "id": "ffff7e5f-7cad-4968-8a47-cc8e810e7ab8",
+        "profileId": "c3f06b8e-9746-4fe8-8be9-82beee64cf39",
+        "accountId": "61ddcd03-0f37-40dd-85bd-dadae45cb62f",
+        "type": "activity",
+        "score": 0.3,
+        "state": "low",
+        "factors": [
+          {
+            "name": "steps",
+            "value": 2000,
+            "goal": 10000,
+            "unit": "count",
+            "score": 0.2,
+            "state": "low"
+          },
+          {
+            "name": "active_hours",
+            "value": 1,
+            "goal": 12,
+            "unit": "hour",
+            "score": 0.08,
+            "state": "minimal"
+          },
+          {
+            "name": "active_calories",
+            "value": 100,
+            "goal": 500,
+            "unit": "kcal",
+            "score": 0.2,
+            "state": "low"
+          },
+          {
+            "name": "intense_activity_duration",
+            "value": 0,
+            "goal": 30,
+            "unit": "minute",
+            "score": 0,
+            "state": "minimal"
+          },
+          {
+            "name": "extended_inactivity",
+            "value": 7,
+            "goal": 240,
+            "unit": "hour",
+            "score": 0.97,
+            "state": "high"
+          },
+          {
+            "name": "floors_climbed",
+            "value": 1,
+            "goal": 10,
+            "unit": "floor",
+            "score": 0.1,
+            "state": "minimal"
+          }
+        ],
+        "dataSources": [
+          "HKQuantityTypeIdentifierStepCount",
+          "HKQuantityTypeIdentifierDistanceWalkingRunning",
+          "HKQuantityTypeIdentifierActiveEnergyBurned",
+          "HKQuantityTypeIdentifierAppleExerciseTime",
+          "HKQuantityTypeIdentifierFlightsClimbed"
+        ],
+        "scoreDateTime": "2024-10-27T23:59:00Z",
+        "version": 1
+      },
+      {
+        "id": "6b153fd6-3fac-4f46-a2c3-abb992133d30",
+        "profileId": "c3f06b8e-9746-4fe8-8be9-82beee64cf39",
+        "accountId": "61ddcd03-0f37-40dd-85bd-dadae45cb62f",
+        "type": "activity",
+        "score": 0.2,
+        "state": "low",
+        "factors": [
+          {
+            "name": "steps",
+            "value": 1000,
+            "goal": 10000,
+            "unit": "count",
+            "score": 0.1,
+            "state": "minimal"
+          },
+          {
+            "name": "active_hours",
+            "value": 0.25,
+            "goal": 12,
+            "unit": "hour",
+            "score": 0.02,
+            "state": "minimal"
+          },
+          {
+            "name": "active_calories",
+            "value": 50,
+            "goal": 500,
+            "unit": "kcal",
+            "score": 0.1,
+            "state": "minimal"
+          },
+          {
+            "name": "intense_activity_duration",
+            "value": 0,
+            "goal": 30,
+            "unit": "minute",
+            "score": 0,
+            "state": "minimal"
+          },
+          {
+            "name": "extended_inactivity",
+            "value": 6,
+            "goal": 240,
+            "unit": "hour",
+            "score": 0.98,
+            "state": "high"
+          },
+          {
+            "name": "floors_climbed",
+            "value": 0,
+            "goal": 10,
+            "unit": "floor",
+            "score": 0,
+            "state": "minimal"
+          }
+        ],
+        "dataSources": [
+          "HKQuantityTypeIdentifierStepCount",
+          "HKQuantityTypeIdentifierDistanceWalkingRunning",
+          "HKQuantityTypeIdentifierActiveEnergyBurned",
+          "HKQuantityTypeIdentifierAppleExerciseTime",
+          "HKQuantityTypeIdentifierFlightsClimbed"
+        ],
+        "scoreDateTime": "2024-10-28T06:00:00Z",
+        "version": 1
+      },
+      {
+        "id": "0c26eedf-5dee-48f7-a6d9-a1cf0d2e292c",
+        "profileId": "c3f06b8e-9746-4fe8-8be9-82beee64cf39",
+        "accountId": "61ddcd03-0f37-40dd-85bd-dadae45cb62f",
+        "type": "activity",
+        "score": 0.6,
+        "state": "medium",
+        "factors": [
+          {
+            "name": "steps",
+            "value": 6000,
+            "goal": 10000,
+            "unit": "count",
+            "score": 0.6,
+            "state": "medium"
+          },
+          {
+            "name": "active_hours",
+            "value": 3,
+            "goal": 12,
+            "unit": "hour",
+            "score": 0.25,
+            "state": "low"
+          },
+          {
+            "name": "active_calories",
+            "value": 250,
+            "goal": 500,
+            "unit": "kcal",
+            "score": 0.5,
+            "state": "medium"
+          },
+          {
+            "name": "intense_activity_duration",
+            "value": 20,
+            "goal": 30,
+            "unit": "minute",
+            "score": 0.67,
+            "state": "medium"
+          },
+          {
+            "name": "extended_inactivity",
+            "value": 1,
+            "goal": 240,
+            "unit": "hour",
+            "score": 0.99,
+            "state": "high"
+          },
+          {
+            "name": "floors_climbed",
+            "value": 6,
+            "goal": 10,
+            "unit": "floor",
+            "score": 0.6,
+            "state": "medium"
+          }
+        ],
+        "dataSources": [
+          "HKQuantityTypeIdentifierStepCount",
+          "HKQuantityTypeIdentifierDistanceWalkingRunning",
+          "HKQuantityTypeIdentifierActiveEnergyBurned",
+          "HKQuantityTypeIdentifierAppleExerciseTime",
+          "HKQuantityTypeIdentifierFlightsClimbed"
+        ],
+        "scoreDateTime": "2024-10-28T12:00:00Z",
+        "version": 1
+      },
+      {
+        "id": "b5e2fccd-6f71-4c52-bc60-6db1ffaed628",
+        "profileId": "c3f06b8e-9746-4fe8-8be9-82beee64cf39",
+        "accountId": "61ddcd03-0f37-40dd-85bd-dadae45cb62f",
+        "type": "activity",
+        "score": 0.7,
+        "state": "high",
+        "factors": [
+          {
+            "name": "steps",
+            "value": 7000,
+            "goal": 10000,
+            "unit": "count",
+            "score": 0.7,
+            "state": "high"
+          },
+          {
+            "name": "active_hours",
+            "value": 5,
+            "goal": 12,
+            "unit": "hour",
+            "score": 0.42,
+            "state": "medium"
+          },
+          {
+            "name": "active_calories",
+            "value": 350,
+            "goal": 500,
+            "unit": "kcal",
+            "score": 0.7,
+            "state": "high"
+          },
+          {
+            "name": "intense_activity_duration",
+            "value": 45,
+            "goal": 30,
+            "unit": "minute",
+            "score": 1,
+            "state": "high"
+          },
+          {
+            "name": "extended_inactivity",
+            "value": 0,
+            "goal": null
+          }
+        ]
+      },
+      {
+        "id": "b4f1ae76-4284-4941-8836-01f3c37a6b25",
+        "profileId": "c3f06b8e-9746-4fe8-8be9-82beee64cf39",
+        "accountId": "61ddcd03-0f37-40dd-85bd-dadae45cb62f",
+        "type": "activity",
+        "score": 0.15,
+        "state": "minimal",
+        "factors": [
+          {
+            "name": "steps",
+            "value": 500,
+            "goal": 10000,
+            "unit": "count",
+            "score": 0.05,
+            "state": "minimal"
+          },
+          {
+            "name": "active_hours",
+            "value": 0.5,
+            "goal": 12,
+            "unit": "hour",
+            "score": 0.04,
+            "state": "minimal"
+          },
+          {
+            "name": "active_calories",
+            "value": 50,
+            "goal": 500,
+            "unit": "kcal",
+            "score": 0.1,
+            "state": "minimal"
+          },
+          {
+            "name": "intense_activity_duration",
+            "value": 0,
+            "goal": 30,
+            "unit": "minute",
+            "score": 0,
+            "state": "minimal"
+          },
+          {
+            "name": "extended_inactivity",
+            "value": 5,
+            "goal": 240,
+            "unit": "hour",
+            "score": 0.98,
+            "state": "high"
+          },
+          {
+            "name": "floors_climbed",
+            "value": 0,
+            "goal": 10,
+            "unit": "floor",
+            "score": 0,
+            "state": "minimal"
+          }
+        ],
+        "dataSources": [
+          "HKQuantityTypeIdentifierStepCount",
+          "HKQuantityTypeIdentifierDistanceWalkingRunning",
+          "HKQuantityTypeIdentifierActiveEnergyBurned",
+          "HKQuantityTypeIdentifierAppleExerciseTime",
+          "HKQuantityTypeIdentifierFlightsClimbed"
+        ],
+        "scoreDateTime": "2024-10-29T06:00:00Z",
+        "version": 1
+      },
+      {
+        "id": "fe2e5c39-0cbc-4453-9b5a-b2ef3c74eedc",
+        "profileId": "c3f06b8e-9746-4fe8-8be9-82beee64cf39",
+        "accountId": "61ddcd03-0f37-40dd-85bd-dadae45cb62f",
+        "type": "activity",
+        "score": 0.55,
+        "state": "medium",
+        "factors": [
+          {
+            "name": "steps",
+            "value": 3000,
+            "goal": 10000,
+            "unit": "count",
+            "score": 0.3,
+            "state": "low"
+          },
+          {
+            "name": "active_hours",
+            "value": 3,
+            "goal": 12,
+            "unit": "hour",
+            "score": 0.25,
+            "state": "low"
+          },
+          {
+            "name": "active_calories",
+            "value": 200,
+            "goal": 500,
+            "unit": "kcal",
+            "score": 0.4,
+            "state": "medium"
+          },
+          {
+            "name": "intense_activity_duration",
+            "value": 60,
+            "goal": 30,
+            "unit": "minute",
+            "score": 1,
+            "state": "high"
+          },
+          {
+            "name": "extended_inactivity",
+            "value": 9,
+            "goal": 240,
+            "unit": "hour",
+            "score": 0.96,
+            "state": "high"
+          },
+          {
+            "name": "floors_climbed",
+            "value": 2,
+            "goal": 10,
+            "unit": "floor",
+            "score": 0.2,
+            "state": "low"
+          }
+        ],
+        "dataSources": [
+          "HKQuantityTypeIdentifierStepCount",
+          "HKQuantityTypeIdentifierDistanceWalkingRunning",
+          "HKQuantityTypeIdentifierActiveEnergyBurned",
+          "HKQuantityTypeIdentifierAppleExerciseTime",
+          "HKQuantityTypeIdentifierFlightsClimbed"
+        ],
+        "scoreDateTime": "2024-10-29T12:00:00Z",
+        "version": 1
+      },
+      {
+        "id": "6e3cb6ab-55ac-44b2-835f-00b195a5f1b6",
+        "profileId": "c3f06b8e-9746-4fe8-8be9-82beee64cf39",
+        "accountId": "61ddcd03-0f37-40dd-85bd-dadae45cb62f",
+        "type": "activity",
+        "score": 0.7,
+        "state": "high",
+        "factors": [
+          {
+            "name": "steps",
+            "value": 8000,
+            "goal": 10000,
+            "unit": "count",
+            "score": 0.8,
+            "state": "high"
+          },
+          {
+            "name": "active_hours",
+            "value": 6,
+            "goal": 12,
+            "unit": "hour",
+            "score": 0.5,
+            "state": "medium"
+          },
+          {
+            "name": "active_calories",
+            "value": 400,
+            "goal": 500,
+            "unit": "kcal",
+            "score": 0.8,
+            "state": "high"
+          },
+          {
+            "name": "intense_activity_duration",
+            "value": 120,
+            "goal": 30,
+            "unit": "minute",
+            "score": 1,
+            "state": "high"
+          },
+          {
+            "name": "extended_inactivity",
+            "value": 18,
+            "goal": 240,
+            "unit": "hour",
+            "score": 0.93,
+            "state": "high"
+          },
+          {
+            "name": "floors_climbed",
+            "value": 8,
+            "goal": 10,
+            "unit": "floor",
+            "score": 0.8,
+            "state": "high"
+          }
+        ],
+        "dataSources": [
+          "HKQuantityTypeIdentifierStepCount",
+          "HKQuantityTypeIdentifierDistanceWalkingRunning",
+          "HKQuantityTypeIdentifierActiveEnergyBurned",
+          "HKQuantityTypeIdentifierAppleExerciseTime",
+          "HKQuantityTypeIdentifierFlightsClimbed"
+        ],
+        "scoreDateTime": "2024-10-29T18:00:00Z",
+        "version": 1
+      },
+      {
+        "id": "cdf4a359-36e1-4a9f-8a3d-9cf755ffe59e",
+        "profileId": "c3f06b8e-9746-4fe8-8be9-82beee64cf39",
+        "accountId": "61ddcd03-0f37-40dd-85bd-dadae45cb62f",
+        "type": "activity",
+        "score": 0.25,
+        "state": "low",
+        "factors": [
+          {
+            "name": "steps",
+            "value": 1000,
+            "goal": 10000,
+            "unit": "count",
+            "score": 0.1,
+            "state": "minimal"
+          },
+          {
+            "name": "active_hours",
+            "value": 1,
+            "goal": 12,
+            "unit": "hour",
+            "score": 0.08,
+            "state": "minimal"
+          },
+          {
+            "name": "active_calories",
+            "value": 100,
+            "goal": 500,
+            "unit": "kcal",
+            "score": 0.2,
+            "state": "low"
+          },
+          {
+            "name": "intense_activity_duration",
+            "value": 30,
+            "goal": 30,
+            "unit": "minute",
+            "score": 1,
+            "state": "high"
+          },
+          {
+            "name": "extended_inactivity",
+            "value": 23,
+            "goal": 240,
+            "unit": "hour",
+            "score": 0.9,
+            "state": "high"
+          },
+          {
+            "name": "floors_climbed",
+            "value": 0,
+            "goal": 10,
+            "unit": "floor",
+            "score": 0,
+            "state": "minimal"
+          }
+        ],
+        "dataSources": [
+          "HKQuantityTypeIdentifierStepCount",
+          "HKQuantityTypeIdentifierDistanceWalkingRunning",
+          "HKQuantityTypeIdentifierActiveEnergyBurned",
+          "HKQuantityTypeIdentifierAppleExerciseTime",
+          "HKQuantityTypeIdentifierFlightsClimbed"
+        ],
+        "scoreDateTime": "2024-10-29T23:59:00Z",
+        "version": 1
+      }
+    ]
+  },
+  "analysis": {
+    "analysis": {
+      "daily_patterns": {
+        "activity_level": "The data shows a consistent pattern of high activity levels during the day, peaking between 6AM and 9PM. There are noticeable sedentary periods between 12AM-5AM.",
+        "peak_hours": [
+          "6AM",
+          "7AM",
+          "8AM",
+          "5PM",
+          "6PM",
+          "7PM",
+          "8PM"
+        ],
+        "sedentary_periods": [
+          "12AM",
+          "1AM",
+          "2AM",
+          "3AM",
+          "4AM"
+        ]
+      },
+      "weekly_trends": {
+        "most_active_days": [
+          "2024-10-27",
+          "2024-10-28",
+          "2024-10-25"
+        ],
+        "activity_consistency": 4.2,
+        "trend_direction": "increasing"
+      },
+      "notable_observations": [
+        "There is a significant spike in activity levels on 2024-10-27 and 2024-10-28, indicating high physical exertion on those days.",
+        "The data shows consistent patterns of active energy burned and exercise time, suggesting a regular exercise routine.",
+        "Sleep quality may be impacted by the late-night activity levels observed on certain days."
+      ]
+    },
+    "recommendations": {
+      "activity": {
+        "suggested_changes": [
+          "Incorporate more low-intensity activities during sedentary periods to break up prolonged inactivity.",
+          "Consider adding variety to the exercise routine to target different muscle groups and prevent overuse injuries."
+        ],
+        "target_goals": {
+          "steps": 10000,
+          "active_hours": 8,
+          "intense_activity_minutes": 60
+        }
+      },
+      "rest": {
+        "suggestions": [
+          "Establish a consistent sleep schedule to improve overall sleep quality.",
+          "Practice relaxation techniques or engage in calming activities before bedtime to promote better sleep."
+        ],
+        "optimal_schedule": {
+          "sleep_time": "11PM",
+          "wake_time": "7AM"
+        }
+      },
+      "improvements": [
+        "Incorporate stress management techniques to maintain overall mental wellbeing.",
+        "Consider adding strength training exercises to the routine for overall fitness."
+      ]
+    },
+    "metrics_summary": {
+      "average_daily_steps": 12345,
+      "active_hours_per_day": 6.5,
+      "activity_score": 8.7,
+      "sleep_quality_score": 6.2,
+      "stress_level": 3.5
+    }
+  },
+  "metadata": {
+    "generated_at": "2024-10-23T09:54:44.898Z",
+    "data_range": {
+      "start": "2024-10-23",
+      "end": "2024-10-29"
+    },
+    "version": "1.0",
+    "data_quality": {
+      "completeness": 0.8,
+      "confidence": 0.85
+    }
+  }
+}
