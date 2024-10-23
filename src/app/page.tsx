@@ -11,12 +11,12 @@ export default function Home() {
   const [Sahha_healthData, setHealthData] = useState<string>("");
 
   // For retrieving Sahha Health Data
-  useEffect(() => {
-    fetch("/api/health-data")
-      .then((response) => response.json())
-      .then((data) => setHealthData(data.data))
-      .catch((error) => console.error("Error loading health data:", error));
-  }, []);
+  // useEffect(() => {
+  //   fetch("/api/health-data")
+  //     .then((response) => response.json())
+  //     .then((data) => setHealthData(data.data))
+  //     .catch((error) => console.error("Error loading health data:", error));
+  // }, []);
 
   return (
     <main className="min-h-screen flex flex-col items-center bg-white">

@@ -41,6 +41,9 @@ dependencies:
   groq-sdk:
     specifier: ^0.5.0
     version: 0.5.0
+  jsonrepair:
+    specifier: ^3.9.0
+    version: 3.9.0
   lucide-react:
     specifier: ^0.416.0
     version: 0.416.0(react@18.0.0)
@@ -6265,6 +6268,11 @@ packages:
       universalify: 2.0.1
     optionalDependencies:
       graceful-fs: 4.2.11
+    dev: false
+
+  /jsonrepair@3.9.0:
+    resolution: {integrity: sha512-gC8z8NP6gEh/9DwDFl8G8nr6KSxdUQBhjTyCq+aZy1mT8DxZf9/V1947MztjLDCdnsn8VjoXj0b2R4HGJdEo7A==}
+    hasBin: true
     dev: false
 
   /jsx-ast-utils@3.3.5:

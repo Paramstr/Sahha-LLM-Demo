@@ -1,9 +1,11 @@
+//src/app/components/HealthDataGenerator.tsx
 import React, { useState } from 'react';
-import { Database, ChevronDown, ChevronUp, Loader2 } from "lucide-react";
+import { Database, ChevronDown, ChevronUp, Loader2, Check } from "lucide-react";
 import ReactJson from 'react-json-view';
 import { Header } from './DataComparisonComponents';
 import HealthVisualisation from './HealthVisualisation'; // Import the HealthVisualisation component
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../components/ui/tooltip";
+import { generateSahha } from './generateSahha';
 
 // Match exact values expected by Python script
 type ActivityLevel = 'very_active' | 'active' | 'moderately_active' | 'sedentary';
@@ -18,14 +20,17 @@ const ConfigSection = () => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isRawDataGenerated, setIsRawDataGenerated] = useState(false);
+  const [generatedSahhaData, setGeneratedSahhaData] = useState<any>(null);
+  const [isGeneratingSahha, setIsGeneratingSahha] = useState(false);
+  const [isSahhaGenerated, setIsSahhaGenerated] = useState(false);
 
-  const generateData = async () => {
+  const generateRawData = async () => {
     setIsGenerating(true);
     setError(null);
   
     try {
       // Construct the file path - remove leading slash for Next.js public folder
-      const filePath = `${process.env.NEXT_PUBLIC_BASE_PATH || ''}/sahha_generated/${activity_level}_week_${exercise_type}.json`;
+      const filePath = `${process.env.NEXT_PUBLIC_BASE_PATH || ''}/raw_generated/${activity_level}_week_${exercise_type}.json`;
       
       // Add cache control headers to prevent caching
       const response = await fetch(filePath, {
@@ -52,11 +57,21 @@ const ConfigSection = () => {
     }
   };
 
-  const handleSahhaButtonClick = () => {
-    if (!isRawDataGenerated) {
-      console.log('Generate raw data first');
-    } else {
-      console.log('Create Sahha Data clicked');
+  const generateSahhaData = async () => {
+    setIsGeneratingSahha(true);
+    setError(null);
+    try {
+      const result = await generateSahha(generatedData);
+      if (result.success) {
+        setGeneratedSahhaData(result.data);
+        setIsSahhaGenerated(true);
+      } else {
+        setError(result.error ?? 'An unknown error occurred');
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred');
+    } finally {
+      setIsGeneratingSahha(false);
     }
   };
 
@@ -114,7 +129,7 @@ const ConfigSection = () => {
 
       <div className="flex space-x-4 mt-4">
         <button
-          onClick={generateData}
+          onClick={generateRawData}
           disabled={isGenerating}
           className="w-full bg-black text-white p-3 rounded-xl hover:bg-gray-800 transition-colors flex items-center justify-center"
         >
@@ -132,15 +147,27 @@ const ConfigSection = () => {
           <Tooltip>
             <TooltipTrigger asChild>
               <button
-                onClick={handleSahhaButtonClick}
-                disabled={!isRawDataGenerated}
+                onClick={generateSahhaData}
+                disabled={!isRawDataGenerated || isGeneratingSahha || isSahhaGenerated}
                 className={`w-full p-3 rounded-xl transition-colors flex items-center justify-center ${
-                  isRawDataGenerated
-                    ? 'bg-[#898121] text-white hover:bg-[#7f7a1e]' // Updated color and hover color
-                    : 'bg-transparent border-2 border-[#898121] text-[#898121] cursor-not-allowed' // Updated color for disabled state
+                  isRawDataGenerated && !isSahhaGenerated
+                    ? 'bg-[#898121] text-white hover:bg-[#7f7a1e]'
+                    : 'bg-transparent border-2 border-[#898121] text-[#898121] cursor-not-allowed'
                 }`}
               >
-                Create Sahha Data
+                {isGeneratingSahha ? (
+                  <>
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    Processing...
+                  </>
+                ) : isSahhaGenerated ? (
+                  <>
+                    <Check className="h-4 w-4 mr-2" />
+                    Sahha Data Created
+                  </>
+                ) : (
+                  'Create Sahha Data'
+                )}
               </button>
             </TooltipTrigger>
             {!isRawDataGenerated && (
@@ -158,7 +185,7 @@ const ConfigSection = () => {
         </div>
       )}
 
-      {generatedData && (
+      {(generatedData || generatedSahhaData) && (
         <div className="mt-8">
           <button
             onClick={() => setIsExpanded(!isExpanded)}
@@ -174,16 +201,35 @@ const ConfigSection = () => {
 
           {isExpanded && (
             <>
-              <div className="bg-gray-100 p-4 rounded-xl">
-                <ReactJson
-                  src={generatedData}
-                  theme="rjv-default"
-                  displayDataTypes={false}
-                  name={false}
-                  collapsed={1}
-                />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <h4 className="font-semibold mb-2">Raw Data</h4>
+                  <div className="bg-gray-100 p-4 rounded-xl">
+                    <ReactJson
+                      src={generatedData}
+                      theme="rjv-default"
+                      displayDataTypes={false}
+                      name={false}
+                      collapsed={1}
+                    />
+                  </div>
+                </div>
+                {generatedSahhaData && (
+                  <div>
+                    <h4 className="font-semibold mb-2">Sahha Data</h4>
+                    <div className="bg-gray-100 p-4 rounded-xl">
+                      <ReactJson
+                        src={generatedSahhaData}
+                        theme="rjv-default"
+                        displayDataTypes={false}
+                        name={false}
+                        collapsed={1}
+                      />
+                    </div>
+                  </div>
+                )}
               </div>
-              <HealthVisualisation data={generatedData} /> {/* Add HealthVisualisation here */}
+              <HealthVisualisation data={generatedData} />
             </>
           )}
         </div>
