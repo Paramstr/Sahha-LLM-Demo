@@ -1,12 +1,23 @@
-//src/app/components/HealthDataGenerator.tsx
+'use client';
+
+import dynamic from 'next/dynamic';
 import React, { useState } from 'react';
 import { Database, ChevronDown, ChevronUp, Loader2, Check } from "lucide-react";
-import ReactJson from 'react-json-view';
+// Remove the direct ReactJson import
 import { Header } from './DataComparisonComponents';
-import HealthVisualisation from './HealthVisualisation'; // Import the HealthVisualisation component
+import HealthVisualisation from './HealthVisualisation';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../components/ui/tooltip";
 import { generateSahha } from './utils/generateSahha';
 import { setterRawData } from '../components/utils/healthDataStore';
+
+// Add the dynamic import for ReactJson
+const ReactJson = dynamic(() => import('react-json-view'), {
+  ssr: false
+});
+
+
+//src/app/components/HealthDataGenerator.tsx
+
 
 // Match exact values expected by Python script
 type ActivityLevel = 'very_active' | 'active' | 'moderately_active' | 'sedentary';

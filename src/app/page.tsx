@@ -10,15 +10,13 @@ import { RawData_LLM_PROMPT } from './components/utils/healthDataStore';
 import { sahha_LLM_PROMPT } from './components/utils/healthDataStore';
 
 export default function Home() {
-  const [Sahha_healthData, setHealthData] = useState<string>("");
+  // State to check if the component is mounted
+  const [isMounted, setIsMounted] = useState(false);
 
-  // For retrieving Sahha Health Data
-  // useEffect(() => {
-  //   fetch("/api/health-data")
-  //     .then((response) => response.json())
-  //     .then((data) => setHealthData(data.data))
-  //     .catch((error) => console.error("Error loading health data:", error));
-  // }, []);
+  useEffect(() => {
+    // Set the mounted state to true when the component is mounted
+    setIsMounted(true);
+  }, []);
 
   return (
     <main className="min-h-screen flex flex-col items-center bg-white">
@@ -29,25 +27,29 @@ export default function Home() {
             An Exploration into Large Language Model assisted health insights and recommendations
           </p>
         </div>
-      {/* Dataset Generation: Raw and Sahha Data */}
-      <HealthDataGenerator />
+        {/* Dataset Generation: Raw and Sahha Data */}
+        <HealthDataGenerator />
 
-      {/* LLM: Inference */}
+        {/* LLM: Inference */}
         <div className="bg-[#F3F4ED] rounded-2xl p-4 md:p-8">
           <div className="grid md:grid-cols-2 gap-6">
-
-            {/* LLM: Inference: Raw Data */}
-            <DataColumn 
-              icon={<ScrollText className="h-6 w-6" />}
-              title="Raw Data"
-              systemPrompt={RawData_LLM_PROMPT}
-            />
-            {/* LLM: Inference: Sahha Data */}
-            <DataColumn 
-              icon={<SahhaLogo />}
-              title='Sahha Data'
-              systemPrompt={sahha_LLM_PROMPT}
-            />  
+            {/* Ensure this part only renders on the client side */}
+            {isMounted && (
+              <>
+                {/* LLM: Inference: Raw Data */}
+                <DataColumn 
+                  icon={<ScrollText className="h-6 w-6" />}
+                  title="Raw Data"
+                  systemPrompt={RawData_LLM_PROMPT}
+                />
+                {/* LLM: Inference: Sahha Data */}
+                <DataColumn 
+                  icon={<SahhaLogo />}
+                  title='Sahha Data'
+                  systemPrompt={sahha_LLM_PROMPT}
+                />
+              </>
+            )}
           </div>
         </div>
       </div>

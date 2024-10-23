@@ -1,11 +1,12 @@
+'use client';
+// DataComparisonComponents.tsx
 import React, { useState } from 'react'
 import { Menu, Moon, Sun } from "lucide-react"
 import { Switch } from "../components/ui/switch"
 import Image from 'next/image'
-import ReactJson from 'react-json-view';
 import { runLLM } from '../components/utils/llm';
 import {Loader2, Check } from "lucide-react";
-
+import dynamic from 'next/dynamic'
 
 
 // Import the modal component from shadcn
@@ -17,6 +18,9 @@ interface DataColumnProps {
   systemPrompt: string;
 }
 
+const ReactJson = dynamic(() => import('react-json-view'), {
+  ssr: false, // This will disable server-side rendering for this component
+})
 export const Header = ({ icon, title }: { icon: React.ReactNode; title: string }) => (
   <div className="flex items-center justify-between mb-4">
     <div className="flex items-center space-x-2">
